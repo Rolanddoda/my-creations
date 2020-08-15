@@ -2,14 +2,28 @@
   <Grid gtr="auto 1fr" class="gallery-page-transition fill-height">
     <div class="text-h3 text-center pa-10">Beautiful places</div>
 
-    <Grid :gtc="`repeat(${photos.length}, 30%)`" class="photos pa-5">
+    <div class="pa-5">
       <div
-        class="photo"
-        v-for="photo of photos"
-        :key="photo.src"
-        :style="{ background: `url(${photo.src}) center / cover` }"
+        v-if="selectedPhoto"
+        class="selected-photo fill-height"
+        :style="{ background: `url(${selectedPhoto.src}) center / cover` }"
+        @click="selectedPhoto = null"
       ></div>
-    </Grid>
+
+      <Grid
+        v-else
+        :gtc="`repeat(${photos.length}, 30%)`"
+        class="photos fill-height"
+      >
+        <div
+          class="photo"
+          v-for="photo of photos"
+          :key="photo.src"
+          :style="{ background: `url(${photo.src}) center / cover` }"
+          @click="selectedPhoto = photo"
+        ></div>
+      </Grid>
+    </div>
   </Grid>
 </template>
 
@@ -37,7 +51,8 @@ export default {
         src:
           "https://i1.wp.com/adventurediary.co/wp-content/uploads/2019/12/aurora-borealis-1933239-min-scaled.jpg?fit=2560%2C1704&ssl=1"
       }
-    ]
+    ],
+    selectedPhoto: null
   })
 };
 </script>
@@ -52,5 +67,10 @@ export default {
 .photos {
   overflow: auto;
   scrollbar-width: none;
+}
+
+.selected-photo,
+.photo {
+  cursor: pointer;
 }
 </style>
