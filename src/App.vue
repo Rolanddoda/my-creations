@@ -9,7 +9,9 @@
       dense
       max-width="150px"
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        @click="isDrawerOpen = !isDrawerOpen"
+      ></v-app-bar-nav-icon>
 
       <v-btn icon to="/">
         <v-icon>mdi-home</v-icon>
@@ -34,6 +36,30 @@
       </Grid>
     </v-app-bar>
 
+    <v-navigation-drawer
+      v-model="isDrawerOpen"
+      absolute
+      temporary
+      :right="drawerRight"
+    >
+      <v-list dense>
+        <v-list-item
+          :to="route.path"
+          v-for="route of routes"
+          :key="route.name"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ route.meta.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ route.name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -41,12 +67,25 @@
 </template>
 
 <script>
+import { routes } from "@/packages/router";
+
 export default {
   name: "App",
 
   data: () => ({
-    position: "top-left"
-  })
+    position: "top-left",
+    isDrawerOpen: false
+  }),
+
+  computed: {
+    drawerRight() {
+      return this.position.includes("right");
+    }
+  },
+
+  created() {
+    this.routes = routes;
+  }
 };
 </script>
 

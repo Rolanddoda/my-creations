@@ -1,4 +1,8 @@
 export default {
   path: "/",
-  component: () => import("./HomePage")
+  name: "Homepage",
+  component: () => import("./HomePage"),
+  meta: {
+    icon: "mdi-home"
+  }
 };

@@ -4,7 +4,7 @@ import { importAllRoutes } from "@/packages/router/utils/import-all-routes";
 
 Vue.use(VueRouter);
 
-const routes = importAllRoutes();
+export const routes = importAllRoutes();
 
 const router = new VueRouter({
   routes
