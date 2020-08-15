@@ -2,33 +2,54 @@
   <Grid gtr="auto 1fr" class="gallery-page-transition fill-height">
     <div class="text-h3 text-center pa-10">Beautiful places</div>
 
-    <div class="pa-5">
+    <transition
+      @before-enter="selectedPhotoBeforeEnter"
+      @enter="selectedPhotoEnter"
+      @after-enter="selectedPhotoAfterEnter"
+      @enter-cancelled="selectedPhotoEnterCancelled"
+      @before-leave="selectedPhotoBeforeLeave"
+      @leave="selectedPhotoLeave"
+      @after-leave="selectedPhotoAfterLeave"
+      class="pa-5"
+      :css="false"
+    >
       <div
         v-if="selectedPhoto"
         class="selected-photo fill-height"
-        :style="{ background: `url(${selectedPhoto.src}) center / cover` }"
+        :style="{
+          background: `url(${selectedPhoto.src}) center / cover`,
+          visibility: 'hidden'
+        }"
         @click="selectedPhoto = null"
-      ></div>
-
-      <Grid
-        v-else
-        :gtc="`repeat(${photos.length}, 30%)`"
-        class="photos fill-height"
       >
-        <div
-          class="photo"
-          v-for="photo of photos"
-          :key="photo.src"
-          :style="{ background: `url(${photo.src}) center / cover` }"
-          @click="selectedPhoto = photo"
-        ></div>
-      </Grid>
-    </div>
+        <SplitImage :cols="5" />
+      </div>
+    </transition>
+
+    <Grid
+      v-if="!selectedPhoto"
+      :gtc="`repeat(${photos.length}, 30%)`"
+      class="photos fill-height pa-5"
+    >
+      <div
+        class="photo"
+        v-for="photo of photos"
+        :key="photo.src"
+        :style="{ background: `url(${photo.src}) center / cover` }"
+        @click="selectedPhoto = photo"
+      ></div>
+    </Grid>
   </Grid>
 </template>
 
 <script>
+import SplitImage from "./SplitImage";
+
 export default {
+  components: {
+    SplitImage
+  },
+
   data: () => ({
     photos: [
       {
@@ -52,8 +73,43 @@ export default {
           "https://i1.wp.com/adventurediary.co/wp-content/uploads/2019/12/aurora-borealis-1933239-min-scaled.jpg?fit=2560%2C1704&ssl=1"
       }
     ],
-    selectedPhoto: null
-  })
+    selectedPhoto: {
+      src:
+        "https://cdn.statically.io/img/globalgrasshopper.com/wp-content/uploads/2020/03/most-beautiful-places-to-visit-in-Japan.jpg?f=auto"
+    }
+  }),
+
+  methods: {
+    selectedPhotoBeforeEnter(el) {
+      console.log("before enter", el);
+    },
+
+    selectedPhotoEnter(el, done) {
+      console.log("enter", el);
+      done();
+    },
+
+    selectedPhotoAfterEnter(el) {
+      console.log("after enter", el);
+    },
+
+    selectedPhotoEnterCancelled(el) {
+      console.log("enter cancelled", el);
+    },
+
+    selectedPhotoBeforeLeave(el) {
+      console.log("before leave", el);
+    },
+
+    selectedPhotoLeave(el, done) {
+      console.log("leave", el);
+      done();
+    },
+
+    selectedPhotoAfterLeave(el) {
+      console.log("after leave", el);
+    }
+  }
 };
 </script>
 
@@ -72,5 +128,20 @@ export default {
 .selected-photo,
 .photo {
   cursor: pointer;
+  position: relative;
+}
+
+.photo {
+  animation: hide-image 1s cubic-bezier(0.5, 0, 0.5, 1);
+
+  &:nth-child(2n) {
+    animation-delay: 0.15s;
+  }
+
+  @keyframes hide-image {
+    to {
+      transform: translateY(100%);
+    }
+  }
 }
 </style>
