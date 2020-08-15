@@ -1,56 +1,78 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    <v-app-bar
+      :class="position"
+      fixed
+      collapse
+      color="primary"
+      dark
+      dense
+      max-width="150px"
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn icon to="/">
+        <v-icon>mdi-home</v-icon>
       </v-btn>
+
+      <Grid gtc="1fr 1fr" class="arrows ml-1">
+        <v-btn icon x-small @click="position = 'top-left'">
+          <v-icon x-small>mdi-arrow-top-left</v-icon>
+        </v-btn>
+
+        <v-btn icon x-small @click="position = 'top-right'">
+          <v-icon x-small>mdi-arrow-top-right</v-icon>
+        </v-btn>
+
+        <v-btn icon x-small @click="position = 'bottom-left'">
+          <v-icon x-small>mdi-arrow-bottom-left</v-icon>
+        </v-btn>
+
+        <v-btn icon x-small @click="position = 'bottom-right'">
+          <v-icon x-small>mdi-arrow-bottom-right</v-icon>
+        </v-btn>
+      </Grid>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-
 export default {
   name: "App",
 
-  components: {
-    HelloWorld
-  },
-
   data: () => ({
-    //
+    position: "top-left"
   })
 };
 </script>
+
+<style lang="scss" scoped>
+.v-app-bar {
+  &.top-right {
+    left: unset !important;
+    right: 0 !important;
+    border-bottom-left-radius: 24px !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  &.bottom-right {
+    left: unset !important;
+    top: unset !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-top-left-radius: 24px !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  &.bottom-left {
+    top: unset !important;
+    bottom: 0 !important;
+    border-top-right-radius: 24px !important;
+    border-bottom-right-radius: 0 !important;
+  }
+}
+</style>
