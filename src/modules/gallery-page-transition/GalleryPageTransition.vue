@@ -2,43 +2,40 @@
   <Grid gtr="auto 1fr" class="gallery-page-transition fill-height">
     <div class="text-h3 text-center pa-10">Beautiful places</div>
 
-    <transition
-      appear
-      @before-enter="selectedPhotoBeforeEnter"
-      @enter="selectedPhotoEnter"
-      @after-enter="selectedPhotoAfterEnter"
-      @enter-cancelled="selectedPhotoEnterCancelled"
-      @before-leave="selectedPhotoBeforeLeave"
-      @leave="selectedPhotoLeave"
-      @after-leave="selectedPhotoAfterLeave"
-      class="pa-5"
-      :css="false"
-    >
-      <div
-        v-if="selectedPhoto"
-        class="selected-photo fill-height"
-        :style="{
-          background: `url(${selectedPhoto.src}) center / cover`
-        }"
-        @click="selectedPhoto = null"
+    <div class="pa-10">
+      <transition
+        appear
+        @before-enter="selectedPhotoBeforeEnter"
+        @leave="selectedPhotoLeave"
+        class="pa-5"
+        :css="false"
       >
-        <SplitImage :cols="5" />
-      </div>
-    </transition>
+        <div
+          v-if="selectedPhoto"
+          class="selected-photo fill-height"
+          :style="{
+            background: `url(${selectedPhoto.src}) center / cover`
+          }"
+          @click="selectedPhoto = null"
+        >
+          <SplitImage :cols="5" />
+        </div>
+      </transition>
 
-    <Grid
-      v-if="!selectedPhoto"
-      :gtc="`repeat(${photos.length}, 30%)`"
-      class="photos fill-height pa-5"
-    >
-      <div
-        class="photo"
-        v-for="photo of photos"
-        :key="photo.src"
-        :style="{ background: `url(${photo.src}) center / cover` }"
-        @click="selectedPhoto = photo"
-      ></div>
-    </Grid>
+      <Grid
+        v-if="!selectedPhoto"
+        :gtc="`repeat(${photos.length}, 30%)`"
+        class="photos fill-height pa-5"
+      >
+        <div
+          class="photo"
+          v-for="photo of photos"
+          :key="photo.src"
+          :style="{ background: `url(${photo.src}) center / cover` }"
+          @click="selectedPhoto = photo"
+        ></div>
+      </Grid>
+    </div>
   </Grid>
 </template>
 
@@ -95,23 +92,6 @@ export default {
       console.log("before enter", el);
     },
 
-    selectedPhotoEnter(el, done) {
-      console.log("enter", el);
-      done();
-    },
-
-    selectedPhotoAfterEnter(el) {
-      console.log("after enter", el);
-    },
-
-    selectedPhotoEnterCancelled(el) {
-      console.log("enter cancelled", el);
-    },
-
-    selectedPhotoBeforeLeave(el) {
-      console.log("before leave", el);
-    },
-
     selectedPhotoLeave(el, done) {
       const item = el.querySelectorAll(".__s-item");
       const tl = gsap.timeline({ onComplete: done });
@@ -123,10 +103,6 @@ export default {
           amount: 0.2
         }
       });
-    },
-
-    selectedPhotoAfterLeave(el) {
-      console.log("after leave", el);
     }
   }
 };
