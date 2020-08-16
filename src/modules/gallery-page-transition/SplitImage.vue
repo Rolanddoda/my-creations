@@ -3,15 +3,13 @@
     <div
       v-for="index in cols"
       :key="index"
-      :class="`__s-${index + 1}`"
+      :class="`__s-item-${index + 1}`"
+      class="__s-item"
       :style="{
         '--s-index': index + 1,
-        background: 'inherit',
-        visibility: 'hidden'
+        background: 'white'
       }"
-    >
-      <div class="s__inner"></div>
-    </div>
+    ></div>
   </Grid>
 </template>
 
@@ -31,18 +29,6 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: inherit;
-  visibility: hidden;
   overflow: hidden;
-
-  .s__inner {
-    background: inherit;
-    visibility: visible;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-  }
 }
 </style>

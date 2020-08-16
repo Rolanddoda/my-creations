@@ -3,6 +3,7 @@
     <div class="text-h3 text-center pa-10">Beautiful places</div>
 
     <transition
+      appear
       @before-enter="selectedPhotoBeforeEnter"
       @enter="selectedPhotoEnter"
       @after-enter="selectedPhotoAfterEnter"
@@ -17,8 +18,7 @@
         v-if="selectedPhoto"
         class="selected-photo fill-height"
         :style="{
-          background: `url(${selectedPhoto.src}) center / cover`,
-          visibility: 'hidden'
+          background: `url(${selectedPhoto.src}) center / cover`
         }"
         @click="selectedPhoto = null"
       >
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 import SplitImage from "./SplitImage";
 
 export default {
@@ -81,6 +82,16 @@ export default {
 
   methods: {
     selectedPhotoBeforeEnter(el) {
+      const item = el.querySelectorAll(".__s-item");
+      gsap.to(item, {
+        y: "100%",
+        delay: 0.2,
+        duration: 1,
+        stagger: {
+          from: "center",
+          amount: 0.2
+        }
+      });
       console.log("before enter", el);
     },
 
@@ -102,8 +113,16 @@ export default {
     },
 
     selectedPhotoLeave(el, done) {
-      console.log("leave", el);
-      done();
+      const item = el.querySelectorAll(".__s-item");
+      const tl = gsap.timeline({ onComplete: done });
+      tl.to(item, {
+        y: "0%",
+        duration: 1,
+        stagger: {
+          from: "center",
+          amount: 0.2
+        }
+      });
     },
 
     selectedPhotoAfterLeave(el) {
@@ -129,19 +148,5 @@ export default {
 .photo {
   cursor: pointer;
   position: relative;
-}
-
-.photo {
-  animation: hide-image 1s cubic-bezier(0.5, 0, 0.5, 1);
-
-  &:nth-child(2n) {
-    animation-delay: 0.15s;
-  }
-
-  @keyframes hide-image {
-    to {
-      transform: translateY(100%);
-    }
-  }
 }
 </style>
