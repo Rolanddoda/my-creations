@@ -31,7 +31,7 @@
             class="photo"
             v-for="photo of photos"
             :key="photo.src"
-            :style="{ background: `url(${photo.src}) center / cover` }"
+            :style="{ backgroundImage: `url(${photo.src})` }"
             @click="selectedPhoto = photo"
           ></div>
         </Grid>
@@ -92,21 +92,14 @@ export default {
         duration: 0.5,
         stagger: {
           from: "center",
-          amount: 0.2
+          amount: 0.3
         }
       };
     },
 
     photosBeforeEnter(el) {
       const items = el.querySelectorAll(".photo");
-      gsap.fromTo(
-        items,
-        { y: "-100%" },
-        {
-          y: "0%",
-          ...this.getCommonGsapValues()
-        }
-      );
+      gsap.from(items, { y: "-100%", ...this.getCommonGsapValues() });
     },
 
     photosLeave(el, done) {
@@ -152,6 +145,17 @@ export default {
 .photos {
   overflow: auto;
   scrollbar-width: none;
+
+  .photo {
+    background-position: center;
+    background-size: auto 100%;
+    transition: background-size 0.7s ease-in-out;
+  }
+
+  > .photo:hover {
+    filter: brightness(0.5);
+    background-size: auto 120%;
+  }
 }
 
 .selected-photo,
