@@ -122,8 +122,10 @@ export default {
     selectedPhotoBeforeEnter(el) {
       const item = el.querySelectorAll(".__s-item");
       gsap.to(item, {
+        duration: 0.7,
         y: "100%",
-        ...this.getCommonGsapValues()
+        ...this.getCommonGsapValues(),
+        ease: "expo.in"
       });
     },
 
