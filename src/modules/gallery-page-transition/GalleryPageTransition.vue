@@ -122,9 +122,9 @@ export default {
     selectedPhotoBeforeEnter(el) {
       const item = el.querySelectorAll(".__s-item");
       gsap.to(item, {
-        duration: 0.7,
         y: "100%",
         ...this.getCommonGsapValues(),
+        duration: 0.7,
         ease: "expo.in"
       });
     },
@@ -134,7 +134,9 @@ export default {
       const tl = gsap.timeline({ onComplete: done });
       tl.to(item, {
         y: "0%",
-        ...this.getCommonGsapValues()
+        ...this.getCommonGsapValues(),
+        duration: 0.7,
+        ease: "expo.in"
       });
     }
   }
