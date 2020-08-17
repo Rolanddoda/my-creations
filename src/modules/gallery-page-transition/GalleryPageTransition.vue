@@ -99,7 +99,11 @@ export default {
 
     photosBeforeEnter(el) {
       const items = el.querySelectorAll(".photo");
-      gsap.from(items, { y: "-100%", ...this.getCommonGsapValues() });
+      gsap.fromTo(
+        items,
+        { y: "100%" },
+        { y: "0%", ...this.getCommonGsapValues() }
+      );
     },
 
     photosLeave(el, done) {
@@ -108,7 +112,7 @@ export default {
         items,
         { y: "0%" },
         {
-          y: "-100%",
+          y: "100%",
           ...this.getCommonGsapValues(),
           onComplete: done
         }
