@@ -29,26 +29,28 @@ export default {
 
 <style lang="scss" scoped>
 .search-box {
+  --color: white;
+  --input-height: 15vh;
+  --border-width: 3px;
+
   display: grid;
   justify-content: center;
   align-items: center;
   height: 100%;
   background: linear-gradient(to right, #8e2de2, #4a00e0);
-  color: white;
-
-  --input-height: 15vh;
-  --border-width: 3px;
+  color: var(--color);
 
   > .input-wrapper {
     position: relative;
     cursor: pointer;
 
     > input {
-      border-top: var(--border-width) solid;
-      border-bottom: var(--border-width) solid;
-      width: 0vw;
+      border-top: var(--border-width) solid var(--color);
+      border-bottom: var(--border-width) solid var(--color);
+      width: 10vw;
       height: var(--input-height);
       outline: none;
+      visibility: hidden;
     }
 
     &:before,
@@ -60,7 +62,7 @@ export default {
       width: var(--input-height);
       height: var(--input-height);
       border-radius: 50% 0 0 50%;
-      left: calc(-1 * var(--input-height) / 2);
+      left: 0;
       clip-path: circle(50% at 50% 50%);
     }
 
@@ -69,17 +71,26 @@ export default {
       border-right: var(--border-width) solid;
       left: unset;
       border-radius: 0 50% 50% 0;
-      right: calc(-1 * var(--input-height) / 2);
+      right: 0;
     }
 
     &[data-input-opened="true"] {
       > input {
-        width: 20vw;
+        width: 10vw;
+        visibility: visible;
       }
 
       &:before,
       &:after {
         clip-path: unset;
+      }
+
+      &:before {
+        left: calc(-1 * var(--input-height) / 2);
+      }
+
+      &:after {
+        right: calc(-1 * var(--input-height) / 2);
       }
     }
   }
