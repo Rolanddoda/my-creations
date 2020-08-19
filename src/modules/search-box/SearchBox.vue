@@ -1,11 +1,10 @@
 <template>
-  <div class="search-box">
-    <div
-      class="input-wrapper"
-      ref="input"
-      data-input-opened="false"
-      @click="onClick"
-    >
+  <Grid place-items="center" gtr="auto 1fr" class="search-box">
+    <div class="text-h3 px-5 pt-15 text-center">
+      Remember that in Gsap transform properties order matters!
+    </div>
+
+    <div class="input-wrapper" ref="input" @click="onClick">
       <input type="search" />
 
       <div class="close-btn">
@@ -13,7 +12,7 @@
         <span class="line line-2"></span>
       </div>
     </div>
-  </div>
+  </Grid>
 </template>
 
 <script>
@@ -37,10 +36,10 @@ export default {
       const [, line2] = lines;
       const tl = gsap.timeline();
 
-      tl.to(lines, { bottom: "35px", right: 0 });
+      tl.to(lines, { x: 0, y: -110 });
       tl.to(input, { visibility: "visible", duration: 0 });
       tl.to(input, { width: "calc(var(--input-size) * 2)" }, "sizeInput");
-      tl.to(line2, { transform: "rotateZ(45deg)" }, "sizeInput");
+      tl.to(line2, { rotateZ: 45 }, "sizeInput");
     },
 
     closeInput(input, lines) {
@@ -54,10 +53,14 @@ export default {
         },
         "sizeInput"
       );
-      tl.to(line2, { transform: "rotateZ(-45deg)" }, "sizeInput");
+      tl.to(line2, { rotation: -45 }, "sizeInput");
       tl.to(input, {
         visibility: "hidden",
         duration: 0
+      });
+      tl.to(lines, {
+        x: 80,
+        y: -35
       });
     }
   }
@@ -70,9 +73,6 @@ export default {
   --input-size: 150px;
   --border-width: 3px;
 
-  display: grid;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   background: linear-gradient(to right, #8e2de2, #4a00e0);
   color: var(--color);
@@ -114,15 +114,14 @@ export default {
     .close-btn {
       position: absolute;
       right: 0;
+      bottom: 0;
 
       .line {
         position: inherit;
         width: var(--border-width);
         height: calc(var(--input-size) / 2);
         background: var(--color);
-        right: calc(-1 * var(--input-size) / 2);
-        bottom: calc(-1 * var(--input-size) / 2 / 1.7 - 3px);
-        transform: rotateZ(-45deg);
+        transform: translate(80px, -35px) rotateZ(-45deg);
       }
     }
   }
