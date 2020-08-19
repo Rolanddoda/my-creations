@@ -9,8 +9,8 @@
       <input type="search" />
 
       <div class="close-btn">
-        <span class="line"></span>
-        <span class="line"></span>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
       </div>
     </div>
   </div>
@@ -24,19 +24,26 @@ let state = false;
 export default {
   methods: {
     onClick() {
-      if (!state) this.openInput();
-      else this.closeInput();
+      const input = this.$refs.input.querySelector("input");
+      const line1 = this.$refs.input.querySelectorAll(".line-1");
+      const line2 = this.$refs.input.querySelectorAll(".line-2");
+
+      if (!state) this.openInput(input, [line1, line2]);
+      else this.closeInput(input, [line1, line2]);
       state = !state;
     },
 
-    openInput() {
-      const input = this.$refs.input.querySelector("input");
-      gsap.to(input, { visibility: "visible", duration: 0 });
-      gsap.to(input, { width: "calc(var(--input-size) * 2)" });
+    openInput(input, lines) {
+      const [, line2] = lines;
+      const tl = gsap.timeline();
+
+      tl.to(lines, { bottom: "35px", right: 0 });
+      tl.to(input, { visibility: "visible", duration: 0 });
+      tl.to(input, { width: "calc(var(--input-size) * 2)" }, "sizeInput");
+      tl.to(line2, { transform: "rotateZ(45deg)" }, "sizeInput");
     },
 
-    closeInput() {
-      const input = this.$refs.input.querySelector("input");
+    closeInput(input) {
       const tl = gsap.timeline();
       tl.to(input, {
         width: "0px",
@@ -99,6 +106,7 @@ export default {
 
     .close-btn {
       position: absolute;
+      right: 0;
 
       .line {
         position: inherit;
