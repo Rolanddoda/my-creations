@@ -24,21 +24,27 @@ let state = false;
 export default {
   methods: {
     onClick() {
-      const input = this.$refs.input.querySelector("input");
-      if (!state) {
-        gsap.to(input, { visibility: "visible", duration: 0 });
-        gsap.to(input, { width: "200px" });
-      } else {
-        const tl = gsap.timeline();
-        tl.to(input, {
-          width: "0px",
-          visibility: "visible"
-        });
-        tl.to(input, {
-          visibility: "hidden"
-        });
-      }
+      if (!state) this.openInput();
+      else this.closeInput();
       state = !state;
+    },
+
+    openInput() {
+      const input = this.$refs.input.querySelector("input");
+      gsap.to(input, { visibility: "visible", duration: 0 });
+      gsap.to(input, { width: "calc(var(--input-size) * 2)" });
+    },
+
+    closeInput() {
+      const input = this.$refs.input.querySelector("input");
+      const tl = gsap.timeline();
+      tl.to(input, {
+        width: "0px",
+        visibility: "visible"
+      });
+      tl.to(input, {
+        visibility: "hidden"
+      });
     }
   }
 };
