@@ -7,6 +7,11 @@
       @click="onClick"
     >
       <input type="search" />
+
+      <div class="close-btn">
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -42,7 +47,7 @@ export default {
 <style lang="scss" scoped>
 .search-box {
   --color: white;
-  --input-height: 150px;
+  --input-size: 150px;
   --border-width: 3px;
 
   display: grid;
@@ -60,7 +65,7 @@ export default {
       border-top: var(--border-width) solid var(--color);
       border-bottom: var(--border-width) solid var(--color);
       width: 0;
-      height: var(--input-height);
+      height: var(--input-size);
       outline: none;
       visibility: hidden;
     }
@@ -71,10 +76,10 @@ export default {
       content: "";
       border: var(--border-width) solid;
       border-right: none;
-      width: var(--input-height);
-      height: var(--input-height);
+      width: var(--input-size);
+      height: var(--input-size);
       border-radius: 50% 0 0 50%;
-      left: calc(var(--input-height) / -2);
+      left: calc(var(--input-size) / -2);
       clip-path: circle(50% at 50% 50%);
     }
 
@@ -83,7 +88,21 @@ export default {
       border-right: var(--border-width) solid;
       left: unset;
       border-radius: 0 50% 50% 0;
-      right: calc(var(--input-height) / -2);
+      right: calc(var(--input-size) / -2);
+    }
+
+    .close-btn {
+      position: absolute;
+
+      .line {
+        position: inherit;
+        width: var(--border-width);
+        height: calc(var(--input-size) / 2);
+        background: var(--color);
+        right: calc(-1 * var(--input-size) / 2);
+        bottom: calc(-1 * var(--input-size) / 2 / 1.7 - 3px);
+        transform: rotateZ(-45deg);
+      }
     }
   }
 }
