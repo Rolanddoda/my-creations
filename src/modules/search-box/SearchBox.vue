@@ -2,10 +2,10 @@
   <Grid place-items="center" gtr="auto 1fr" class="search-box">
     <Info></Info>
 
-    <div class="input-wrapper" ref="input" @click="onClick">
+    <div class="input-wrapper" ref="input" @click="manageClick('open')">
       <input type="search" />
 
-      <div class="close-btn">
+      <div class="close-btn" @click.stop="manageClick('close')">
         <span class="line line-1"></span>
         <span class="line line-2"></span>
       </div>
@@ -19,7 +19,7 @@ import gsap from "gsap";
 // Components
 import Info from "./components/Info";
 
-let state = false;
+let isInputOpened = false;
 
 export default {
   components: {
@@ -27,17 +27,27 @@ export default {
   },
 
   methods: {
-    onClick() {
+    getPayload() {
+      const input = this.$refs.input.querySelector("input");
+      const line1 = this.$refs.input.querySelectorAll(".line-1");
+      const line2 = this.$refs.input.querySelectorAll(".line-2");
+      return { input, lines: [line1, line2] };
+    },
+
+    manageClick(openOrClose) {
+      if (isInputOpened && openOrClose === "open") return;
+
       const input = this.$refs.input.querySelector("input");
       const line1 = this.$refs.input.querySelectorAll(".line-1");
       const line2 = this.$refs.input.querySelectorAll(".line-2");
 
-      if (!state) this.openInput(input, [line1, line2]);
-      else this.closeInput(input, [line1, line2]);
-      state = !state;
+      this[`${openOrClose}Input`](input, [line1, line2]);
+
+      isInputOpened = !isInputOpened;
     },
 
-    openInput(input, lines) {
+    openInput() {
+      const { input, lines } = this.getPayload();
       const [, line2] = lines;
       const tl = gsap.timeline();
 
@@ -47,7 +57,8 @@ export default {
       tl.to(line2, { rotateZ: 45 }, "sizeInput");
     },
 
-    closeInput(input, lines) {
+    closeInput() {
+      const { input, lines } = this.getPayload();
       const [, line2] = lines;
       const tl = gsap.timeline();
       tl.to(
@@ -120,6 +131,7 @@ export default {
       position: absolute;
       right: 0;
       bottom: 0;
+      z-index: 1;
 
       .line {
         position: inherit;
