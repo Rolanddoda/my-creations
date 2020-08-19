@@ -1,8 +1,6 @@
 <template>
   <Grid place-items="center" gtr="auto 1fr" class="search-box">
-    <div class="text-h3 px-5 pt-15 text-center">
-      Remember that in Gsap transform properties order matters!
-    </div>
+    <Info></Info>
 
     <div class="input-wrapper" ref="input" @click="onClick">
       <input type="search" />
@@ -16,11 +14,18 @@
 </template>
 
 <script>
+// Libraries
 import gsap from "gsap";
+// Components
+import Info from "./components/Info";
 
 let state = false;
 
 export default {
+  components: {
+    Info
+  },
+
   methods: {
     onClick() {
       const input = this.$refs.input.querySelector("input");
