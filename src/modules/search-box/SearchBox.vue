@@ -43,14 +43,21 @@ export default {
       tl.to(line2, { transform: "rotateZ(45deg)" }, "sizeInput");
     },
 
-    closeInput(input) {
+    closeInput(input, lines) {
+      const [, line2] = lines;
       const tl = gsap.timeline();
+      tl.to(
+        input,
+        {
+          width: "0px",
+          visibility: "visible"
+        },
+        "sizeInput"
+      );
+      tl.to(line2, { transform: "rotateZ(-45deg)" }, "sizeInput");
       tl.to(input, {
-        width: "0px",
-        visibility: "visible"
-      });
-      tl.to(input, {
-        visibility: "hidden"
+        visibility: "hidden",
+        duration: 0
       });
     }
   }
