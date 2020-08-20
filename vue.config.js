@@ -1,3 +1,8 @@
 module.exports = {
-  transpileDependencies: ["vuetify"]
+  transpileDependencies: ["vuetify"],
+
+  devServer: {
+    clientLogLevel: "warn",
+    overlay: false
+  }
 };
