@@ -6,8 +6,7 @@
       <input type="search" />
 
       <div class="close-btn" @click.stop="manageClick('close')">
-        <span class="line line-1"></span>
-        <span class="line line-2"></span>
+        <SvgLines />
       </div>
     </div>
   </Grid>
@@ -18,12 +17,14 @@
 import gsap from "gsap";
 // Components
 import Info from "./components/Info";
+import SvgLines from "./components/SvgLines";
 
 let isInputOpened = false;
 
 export default {
   components: {
-    Info
+    Info,
+    SvgLines
   },
 
   methods: {
@@ -84,11 +85,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search-box {
-  --color: white;
-  --input-size: 150px;
-  --border-width: 3px;
+@import "variables";
 
+.search-box {
   height: 100%;
   background: linear-gradient(to right, #8e2de2, #4a00e0);
   color: var(--color);
@@ -129,17 +128,10 @@ export default {
 
     .close-btn {
       position: absolute;
-      right: 0;
-      bottom: 0;
+      width: calc(var(--input-size) / 2);
+      height: calc(var(--input-size) / 2);
       z-index: 1;
-
-      .line {
-        position: inherit;
-        width: var(--border-width);
-        height: calc(var(--input-size) / 2);
-        background: var(--color);
-        transform: translate(80px, -35px) rotateZ(-45deg);
-      }
+      border: 1px solid;
     }
   }
 }
