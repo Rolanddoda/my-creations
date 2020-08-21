@@ -22,46 +22,71 @@ export default {
   methods: {
     mounted() {
       const [box0, box1] = this.$el.querySelectorAll(".box");
+      const { duration } = this.getPayload();
 
       const tl = gsap.timeline();
-      const duration = 2;
+
+      tl.to(box0, { left: "100%", duration });
+      this.boxFirstAnim(tl, box1);
+      this.boxSecondAnim(tl, box1);
+      this.boxThirdAnim(tl, box1);
+    },
+
+    getPayload() {
+      const duration = 5;
       const boxSize = parseInt(
         getComputedStyle(this.$el).getPropertyValue("--box-size")
       );
       const gap = boxSize / 2;
+      return {
+        boxSize,
+        duration,
+        gap
+      };
+    },
 
-      tl.to(box0, { left: "100%", duration });
+    boxFirstAnim(tl, box) {
+      const { boxSize, duration } = this.getPayload();
+
       tl.to(
-        box1,
+        box,
         {
           rotation: -45,
           top: -(boxSize / 1.5),
           duration: duration / 20,
-          ease: "power4.out"
+          ease: "none"
         },
         "<"
       );
+    },
+
+    boxSecondAnim(tl, box) {
+      const { boxSize, duration, gap } = this.getPayload();
 
       tl.to(
-        box1,
+        box,
         {
           left: boxSize + gap,
           rotation: -90,
           top: -(boxSize + gap),
           duration: duration / 20,
-          ease: "power4.out"
+          ease: "none"
         },
         ">"
       );
+    },
+
+    boxThirdAnim(tl, box) {
+      const { duration } = this.getPayload();
 
       tl.to(
-        box1,
+        box,
         {
           left: 0,
           rotation: -180,
           top: 0,
           duration: duration / 15,
-          ease: "power4.out"
+          ease: "none"
         },
         ">"
       );
