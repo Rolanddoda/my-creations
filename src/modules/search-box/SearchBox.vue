@@ -6,8 +6,8 @@
       <div class="input" ref="inputWrapper" data-input="closed">
         <span class="input-before"></span>
         <input type="search" />
-        <span class="input-after" @click="openOrCloseInput">
-          <div class="close-btn">
+        <span class="input-after" @click="openInput">
+          <div class="close-btn" @click.stop="closeInput">
             <SvgLines />
           </div>
         </span>
@@ -22,7 +22,7 @@ import gsap from "gsap";
 import Info from "./components/Info";
 import SvgLines from "./components/SvgLines";
 
-let state = false;
+let isInputOpened = false;
 
 export default {
   components: {
@@ -31,11 +31,9 @@ export default {
   },
 
   methods: {
-    openOrCloseInput() {
-      if (!state) this.openInput();
-    },
-
     openInput() {
+      if (isInputOpened) return;
+
       const tl = gsap.timeline();
       const closeBtn = this.$refs.inputWrapper.querySelector(".close-btn");
       const input = this.$refs.inputWrapper.querySelector("input");
@@ -46,11 +44,8 @@ export default {
         bottom: 40,
         duration: 0.3,
         onComplete: () => {
-          state = !state;
-          this.$refs.inputWrapper.setAttribute(
-            "data-input",
-            state ? "opened" : "closed"
-          );
+          isInputOpened = true;
+          this.$refs.inputWrapper.setAttribute("data-input", "opened");
         }
       });
       tl.to(
@@ -67,13 +62,52 @@ export default {
         {
           rotation: 90,
           transformOrigin: "center",
-          duration: 0.5,
+          duration: 0.2,
           onComplete: () => {
             input.focus();
           }
         },
         "size-input"
       );
+    },
+
+    closeInput() {
+      if (!isInputOpened) return;
+
+      const tl = gsap.timeline();
+      const closeBtn = this.$refs.inputWrapper.querySelector(".close-btn");
+      const input = this.$refs.inputWrapper.querySelector("input");
+      const line = this.$refs.inputWrapper.querySelector(".line");
+
+      input.blur();
+
+      tl.to(
+        input,
+        {
+          width: 0,
+          ease: "back.in(2.7)",
+          duration: 0.7,
+          onComplete: () => {
+            isInputOpened = false;
+            this.$refs.inputWrapper.setAttribute("data-input", "closed");
+          }
+        },
+        "size-input"
+      );
+      tl.to(
+        line,
+        {
+          rotation: 0,
+          transformOrigin: "center",
+          duration: 0.2
+        },
+        "size-input"
+      );
+      tl.to(closeBtn, {
+        right: -40,
+        bottom: -40,
+        duration: 0.3
+      });
     }
   }
 };
