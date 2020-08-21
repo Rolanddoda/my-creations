@@ -32,6 +32,10 @@ export default {
 
   methods: {
     openOrCloseInput() {
+      if (!state) this.openInput();
+    },
+
+    openInput() {
       const tl = gsap.timeline();
       const closeBtn = this.$refs.inputWrapper.querySelector(".close-btn");
       const input = this.$refs.inputWrapper.querySelector("input");
@@ -40,6 +44,7 @@ export default {
       tl.to(closeBtn, {
         right: 40,
         bottom: 40,
+        duration: 0.3,
         onComplete: () => {
           state = !state;
           this.$refs.inputWrapper.setAttribute(
@@ -50,29 +55,25 @@ export default {
       });
       tl.to(
         input,
-        { width: "calc(var(--input-size) * 2)", duration: 2 },
+        {
+          width: "calc(var(--input-size) * 2)",
+          ease: "back.out(2.7)",
+          duration: 0.7
+        },
         "size-input"
       );
       tl.to(
         line,
-        { rotation: 90, transformOrigin: "center", duration: 2 },
+        {
+          rotation: 90,
+          transformOrigin: "center",
+          duration: 0.5,
+          onComplete: () => {
+            input.focus();
+          }
+        },
         "size-input"
       );
-    },
-
-    openInput() {
-      const tl = gsap.timeline();
-      const closeBtn = this.$refs.inputWrapper.querySelector(".close-btn");
-      const inputSize = parseInt(
-        getComputedStyle(closeBtn).getPropertyValue("--input-size")
-      );
-      const halfInputSize = inputSize / 2;
-      const quarterInputSize = halfInputSize / 2;
-
-      const x = -1 * quarterInputSize + "px";
-      const y = -1 * halfInputSize - quarterInputSize + "px";
-
-      tl.to(closeBtn, { x, y });
     }
   }
 };
@@ -103,6 +104,12 @@ export default {
       height: var(--input-size);
       outline: none;
       visibility: visible;
+      font-size: 3rem;
+      color: inherit;
+
+      &::selection {
+        background: #450680;
+      }
     }
 
     > .input-before,
@@ -114,9 +121,10 @@ export default {
     }
 
     > .input-before {
+      pointer-events: none;
       border-right: none;
       border-radius: 50% 0 0 50%;
-      left: calc(-1 * var(--input-size));
+      left: calc(-1 * var(--input-size) / 2);
     }
 
     > .input-after {
