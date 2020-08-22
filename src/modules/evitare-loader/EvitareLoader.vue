@@ -21,15 +21,21 @@ import { gsap } from "gsap";
 export default {
   methods: {
     mounted() {
-      const [box0, box1] = this.$el.querySelectorAll(".box");
-      const { duration } = this.getPayload();
+      const [box0, ...boxes] = this.$el.querySelectorAll(".box");
+      const { duration, boxSize, gap } = this.getPayload();
 
       const tl = gsap.timeline();
 
-      tl.to(box0, { left: "100%", duration });
-      this.boxFirstAnim(tl, box1);
-      this.boxSecondAnim(tl, box1);
-      this.boxThirdAnim(tl, box1);
+      tl.to(
+        box0,
+        { left: boxSize * 4 + 4 * gap, duration, ease: "none" },
+        "start"
+      );
+      boxes.forEach((box, index) => {
+        this.boxFirstAnim(tl, box, index + 1);
+        this.boxSecondAnim(tl, box, index + 1);
+        this.boxThirdAnim(tl, box, index + 1);
+      });
     },
 
     getPayload() {
@@ -45,7 +51,7 @@ export default {
       };
     },
 
-    boxFirstAnim(tl, box) {
+    boxFirstAnim(tl, box, index) {
       const { boxSize, duration } = this.getPayload();
 
       tl.to(
@@ -53,39 +59,39 @@ export default {
         {
           rotation: -45,
           top: -(boxSize / 1.5),
-          duration: duration / 20,
+          duration: duration / 12,
           ease: "none"
         },
-        "<"
+        `${index - 1}`
       );
     },
 
-    boxSecondAnim(tl, box) {
+    boxSecondAnim(tl, box, index) {
       const { boxSize, duration, gap } = this.getPayload();
 
       tl.to(
         box,
         {
-          left: boxSize + gap,
+          left: (boxSize + gap / 2) * index,
           rotation: -90,
           top: -(boxSize + gap),
-          duration: duration / 20,
+          duration: duration / 12,
           ease: "none"
         },
         ">"
       );
     },
 
-    boxThirdAnim(tl, box) {
-      const { duration } = this.getPayload();
+    boxThirdAnim(tl, box, index) {
+      const { boxSize, gap, duration } = this.getPayload();
 
       tl.to(
         box,
         {
-          left: 0,
+          left: (boxSize + gap) * (index - 1),
           rotation: -180,
           top: 0,
-          duration: duration / 15,
+          duration: duration / 5,
           ease: "none"
         },
         ">"
