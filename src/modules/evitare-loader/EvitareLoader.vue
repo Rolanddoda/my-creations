@@ -24,7 +24,7 @@ export default {
       const [box0, ...boxes] = this.$el.querySelectorAll(".box");
       const { duration, boxSize, gap } = this.getPayload();
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ yoyo: true, repeat: -1, repeatDelay: 0.3 });
 
       tl.to(
         box0,
@@ -39,7 +39,7 @@ export default {
     },
 
     getPayload() {
-      const duration = 5;
+      const duration = 1;
       const boxSize = parseInt(
         getComputedStyle(this.$el).getPropertyValue("--box-size")
       );
