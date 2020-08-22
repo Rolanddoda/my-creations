@@ -62,7 +62,7 @@ export default {
           duration: duration / 12,
           ease: "none"
         },
-        `${index - 1}`
+        `${((index - 1) * duration) / 5}`
       );
     },
 
