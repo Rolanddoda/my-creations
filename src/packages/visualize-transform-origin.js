@@ -7,7 +7,7 @@ const isValidColor = color => {
 };
 
 Vue.directive("viz", {
-  bind(el, binding) {
+  inserted(el, binding) {
     const defaultColor = "#000";
     const color = isValidColor(binding.value) ? binding.value : defaultColor;
     const transformOrigin = getComputedStyle(el).getPropertyValue(
