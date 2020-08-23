@@ -5,7 +5,6 @@
     ref="boxes"
     @hook:mounted="mounted"
   >
-    <button @click="pause">Pause</button>
     <Grid gaf="column" class="box-wrapper">
       <div class="box" style="--index: 0"></div>
       <div class="box" style="--index: 1;"></div>
@@ -20,43 +19,9 @@
 import { gsap } from "gsap";
 
 let tl = null;
-let pause = false;
 
 export default {
-  directives: {
-    viz: {
-      inserted(el) {
-        const transformOrigin = getComputedStyle(el).getPropertyValue(
-          "transform-origin"
-        );
-        console.log(transformOrigin);
-        const [xAxis, yAxis] = transformOrigin
-          .split(" ")
-          .map(val => parseInt(val));
-
-        const size = 7;
-        const radius = "50%";
-
-        const vizEl = document.createElement("span");
-        vizEl.style.position = "absolute";
-        vizEl.style.left = xAxis - size / 2 + "px";
-        vizEl.style.top = yAxis - size / 2 + "px";
-        vizEl.style.backgroundColor = "#000";
-        vizEl.style.width = size + "px";
-        vizEl.style.height = size + "px";
-        vizEl.style.borderRadius = radius;
-
-        el.appendChild(vizEl);
-      }
-    }
-  },
   methods: {
-    pause() {
-      if (pause) tl.restart();
-      else tl.pause();
-      pause = !pause;
-    },
-
     mounted() {
       const [box0, ...boxes] = this.$el.querySelectorAll(".box");
       const payload = this.getPayload();
