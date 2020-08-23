@@ -1,5 +1,9 @@
 <template>
-  <Grid place-items="center" class="loading-boxes fill-height">
+  <Grid
+    place-items="center"
+    class="loading-boxes fill-height"
+    @hook:mounted="mounted"
+  >
     <div class="box-wrapper">
       <div class="box"></div>
       <div class="box"></div>
@@ -8,7 +12,20 @@
 </template>
 
 <script>
-export default {};
+import { gsap } from "gsap";
+
+export default {
+  methods: {
+    mounted() {
+      const [box0, box1] = this.$el.querySelectorAll(".box");
+      const tl = gsap.timeline({ repeat: -1, delay: 0.5 });
+
+      tl.to(box0, { rotation: 90, ease: "power2.in" });
+      tl.to(box1, { rotation: 180, ease: "power2.out" });
+      tl.to(box0, { rotation: 180, ease: "power2.in" });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
