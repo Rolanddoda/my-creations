@@ -7,7 +7,7 @@
       class="__s-item"
       :style="{
         '--s-index': index + 1,
-        background: 'white'
+        background: '#283c86'
       }"
     ></div>
   </Grid>

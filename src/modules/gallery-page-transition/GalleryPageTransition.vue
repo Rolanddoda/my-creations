@@ -150,6 +150,10 @@ export default {
   }
 }
 
+.gallery-page-transition {
+  background: #283c86;
+}
+
 .photos {
   overflow: auto;
   scrollbar-width: none;

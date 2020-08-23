@@ -120,7 +120,8 @@ export default {
 
 <style lang="scss" scoped>
 .evitare-loader {
-  box-sizing: border-box;
+  background: linear-gradient(to right, #3c1053, #ad5389);
+
   --box-size: 50px;
   --gap: calc(var(--box-size) / 2);
 
