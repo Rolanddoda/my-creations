@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     pause() {
-      if (pause) tl.play();
+      if (pause) tl.restart();
       else tl.pause();
       pause = !pause;
     },
@@ -60,7 +60,7 @@ export default {
       const [box0, ...boxes] = this.$el.querySelectorAll(".box");
       const { duration, boxSize, gap } = this.getPayload();
 
-      const tl = gsap.timeline({ yoyo: true, repeat: -1, repeatDelay: 0.3 });
+      tl = gsap.timeline({ yoyo: true, repeat: -1, repeatDelay: 0.3 });
       tl.to(
         box0,
         { left: boxSize * 4 + 4 * gap, duration, ease: "none" },
@@ -68,14 +68,11 @@ export default {
       );
       boxes.forEach((box, index) => {
         this.boxFirstAnim(tl, box, index + 1);
-        // this.boxSecondAnim(tl, box, index + 1);
-        // this.boxThirdAnim(tl, box, index + 1);
-        // this.boxFourthAnim(tl, box);
       });
     },
 
     getPayload() {
-      const duration = 1;
+      const duration = 2;
       const boxSize = parseInt(
         getComputedStyle(this.$el).getPropertyValue("--box-size")
       );
@@ -90,16 +87,17 @@ export default {
     boxFirstAnim(tl, box, index) {
       const { boxSize, duration, gap } = this.getPayload();
       const quarterBoxSize = boxSize / 4;
+      const boxAnimDuration = duration / 4;
 
       tl.to(
         box,
         {
           rotation: -270,
           transformOrigin: `-${quarterBoxSize}px -${quarterBoxSize}px`,
-          duration: duration / 4,
+          duration: duration / 1.5,
           ease: "none"
         },
-        `${(index - 1) * (duration / 4)}`
+        `${((index - 1) * boxAnimDuration) / 2}`
       );
       tl.to(
         box,
@@ -118,7 +116,7 @@ export default {
         {
           scaleY: 0.5,
           scaleX: 1.5,
-          duration: duration / (5 * 2),
+          duration: boxAnimDuration / 3,
           ease: "none"
         },
         ">"
@@ -129,7 +127,7 @@ export default {
         {
           scaleY: 1,
           scaleX: 1,
-          duration: duration / (5 * 2),
+          duration: boxAnimDuration / 3,
           ease: "none"
         },
         ">"
