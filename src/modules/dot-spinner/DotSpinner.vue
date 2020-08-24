@@ -27,9 +27,6 @@ export default {
     width: 200px;
     height: 200px;
     border: 1px solid;
-    //perspective: 25px;
-    //transform-style: preserve-3d;
-    //transform: rotate(5deg);
   }
 }
 </style>
