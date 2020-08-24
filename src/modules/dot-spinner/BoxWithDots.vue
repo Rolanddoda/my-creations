@@ -27,12 +27,13 @@ export default {
 <style lang="scss" scoped>
 .box {
   --box-size: 200px;
-  --dot-sm-size: 20px;
-  --dot-big-size: 40px;
+  --dot-sm-size: 30px;
+  --dot-big-size: 50px;
 
   position: absolute;
   width: var(--box-size);
   height: var(--box-size);
+  mix-blend-mode: screen;
   transform: translateZ(var(--z));
 
   .dot {
