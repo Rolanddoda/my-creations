@@ -28,7 +28,18 @@ export default {
     -webkit-text-stroke-color: black;
     font-family: cursive;
     transform: skewY(var(--skew));
-    transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+    text-shadow: -2px 2px #000;
+    transition: text-shadow 1s cubic-bezier(0.215, 0.61, 0.355, 1),
+      transform 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+
+    &:hover {
+      --distance: 10px;
+      --negative-distance: calc(var(--distance) * -1);
+
+      text-shadow: var(--negative-distance) var(--distance) #000;
+      transform: skewY(var(--skew))
+        translate(var(--distance), var(--negative-distance));
+    }
   }
 }
 </style>
