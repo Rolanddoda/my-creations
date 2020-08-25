@@ -26,11 +26,20 @@ export default {
     mounted() {
       const [, box1, box2] = this.$el.querySelectorAll(".box");
       const wrapper = this.$el.querySelector(".box-wrapper");
-      const tl = gsap.timeline({ delay: 0.5 });
+      const tl = gsap.timeline({
+        delay: 0.5,
+        repeat: -1,
+        repeatDelay: 0.5
+      });
+      const duration = 1;
 
-      tl.to(wrapper, { rotation: 65, duration: 3 }, 0);
-      tl.to(box1, { z: 0, duration: 2 }, 0);
-      tl.to(box2, { z: 0, duration: 2 }, 0);
+      tl.to(box1, { z: 0, duration }, 0);
+      tl.to(box2, { z: 0, duration }, "<");
+      tl.to(wrapper, { rotation: 175, duration, ease: "back.out(1.7)" }, "0.9");
+
+      tl.to(box1, { z: 3, duration }, ">");
+      tl.to(box2, { z: 5, duration }, "<");
+      tl.to(wrapper, { rotation: 285, duration, ease: "back.out(1.7)" });
     }
   }
 };
