@@ -26,12 +26,13 @@ export default {
     position: relative;
     font-size: 15vw;
     text-transform: uppercase;
-    -webkit-text-fill-color: #ab1058;
+    -webkit-text-fill-color: #f1d40b;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     text-shadow: 1px 0 0 #000, -1px 0 0px #000, 0 -1px 0px #000, 0 1px 0px #000;
     font-family: cursive;
     transform: skewY(var(--calc-skew));
+    transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
 
     &::after {
       text-shadow: none;

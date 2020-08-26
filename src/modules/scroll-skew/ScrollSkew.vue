@@ -56,5 +56,7 @@ export default {
 <style lang="scss" scoped>
 .frameworks {
   --skew: 0deg;
+
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
 }
 </style>
