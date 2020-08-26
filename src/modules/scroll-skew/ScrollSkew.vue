@@ -36,12 +36,12 @@ export default {
 
   methods: {
     reallyMounted() {
-      let oldScrollPos = window.scrollY;
+      let oldScrollPos = this.$el.scrollTop;
 
-      window.onscroll = () => {
-        const newScrollPos = window.scrollY;
+      this.$el.onscroll = () => {
+        const newScrollPos = this.$el.scrollTop;
         const scrollDif = newScrollPos - oldScrollPos;
-        let newSkew = 0;
+        let newSkew;
         if (scrollDif > 20) newSkew = 20;
         else if (scrollDif < -20) newSkew = -20;
         else newSkew = scrollDif;
@@ -54,8 +54,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@supports not (scrollbar-width: none) {
+  .frameworks::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
 .frameworks {
   --skew: 0deg;
+
+  height: 100vh;
+  overflow: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
 }
