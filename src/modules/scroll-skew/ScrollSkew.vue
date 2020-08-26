@@ -34,33 +34,19 @@ export default {
     ];
   },
 
-  mounted() {},
-
   methods: {
     reallyMounted() {
-      let timer;
-      let scrollOldPos = window.scrollY;
+      let oldScrollPos = window.scrollY;
+
       window.onscroll = () => {
-        console.log("running");
-        if (timer) clearTimeout(timer);
-        const scrollNewPos = window.scrollY;
-        const scrollUpOrDown = scrollNewPos >= scrollOldPos ? 1 : -1; // 1 => Down, -1 => Up
-        const getEl = getComputedStyle;
-        const getSkewCssVar = getEl(this.$el).getPropertyValue("--skew");
-        const setSkewCssVar = val => this.$el.style.setProperty("--skew", val);
-        let skew = parseInt(getSkewCssVar);
-        scrollOldPos = scrollNewPos;
-
-        function resetSkew() {
-          setSkewCssVar(`-5deg`); // -5deg is the default
-        }
-
-        if (skew < 15 && skew > -15) {
-          skew += scrollUpOrDown;
-          setSkewCssVar(`${skew}deg`);
-        }
-
-        timer = setTimeout(resetSkew, 100);
+        const newScrollPos = window.scrollY;
+        const scrollDif = newScrollPos - oldScrollPos;
+        let newSkew = 0;
+        if (scrollDif > 20) newSkew = 20;
+        else if (scrollDif < -20) newSkew = -20;
+        else newSkew = scrollDif;
+        this.$el.style.setProperty("--skew", `${newSkew}deg`);
+        oldScrollPos = newScrollPos;
       };
     }
   }
@@ -69,6 +55,6 @@ export default {
 
 <style lang="scss" scoped>
 .frameworks {
-  --skew: -5deg;
+  --skew: 0deg;
 }
 </style>
