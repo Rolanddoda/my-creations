@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import images from "./images-articles";
 import Flipping from "flipping/dist/flipping.web";
 
 const flipping = new Flipping();
@@ -67,43 +68,7 @@ export default {
   }),
 
   created() {
-    this.images = [
-      {
-        src: "https://picsum.photos/1200/1200/?image=1005",
-        title: "Stephen Shaw",
-        description: "Lorem5"
-      },
-      {
-        src: "https://picsum.photos/1200/1200/?image=804",
-        title: "Keyframes",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
-      },
-      {
-        src: "https://picsum.photos/1200/1200/?image=838",
-        title: "David Khourshid",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
-      },
-      {
-        src: "https://picsum.photos/1200/1200/?image=832",
-        title: "Roland Doda",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
-      },
-      {
-        src: "https://picsum.photos/1200/1200/?image=836",
-        title: "Mariglen Doda",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
-      },
-      {
-        src: "https://picsum.photos/1200/1200/?image=823",
-        title: "Klodian shaba",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
-      }
-    ];
+    this.images = images;
   },
 
   mounted() {
