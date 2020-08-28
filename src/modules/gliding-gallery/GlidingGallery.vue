@@ -1,15 +1,6 @@
 <template>
   <div id="app" data-state="0">
-    <div class="ui-big-images">
-      <div
-        class="ui-big-image"
-        v-for="(image, index) of images"
-        :key="image.src"
-        :data-key="index"
-      >
-        <img :src="image.src" />
-      </div>
-    </div>
+    <BigImages :images="images" />
 
     <div class="ui-thumbnails">
       <div
@@ -55,6 +46,8 @@
 <script>
 import images from "./images-articles";
 import Flipping from "flipping/dist/flipping.web";
+// Components
+import BigImages from "./components/BigImages";
 
 const flipping = new Flipping();
 let activeBoxIndex = 0;
@@ -63,6 +56,10 @@ let state = {
 };
 
 export default {
+  components: {
+    BigImages
+  },
+
   data: () => ({
     flipping: null
   }),
@@ -143,29 +140,29 @@ img {
   overflow: hidden;
 }
 
-.ui-big-images {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-}
-
-.ui-big-image {
-  width: 100%;
-  margin-right: -100%;
-
-  img {
-    object-fit: cover;
-    object-position: center 20%;
-    @media (max-height: 600px) {
-      object-position: center center;
-    }
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-}
+//.ui-big-images {
+//  position: absolute;
+//  height: 100%;
+//  width: 100%;
+//  overflow: hidden;
+//  display: flex;
+//}
+//
+//.ui-big-image {
+//  width: 100%;
+//  margin-right: -100%;
+//
+//  img {
+//    object-fit: cover;
+//    object-position: center 20%;
+//    @media (max-height: 600px) {
+//      object-position: center center;
+//    }
+//    width: 100%;
+//    height: 100%;
+//    display: block;
+//  }
+//}
 
 .ui-thumbnails {
   position: absolute;
@@ -278,7 +275,7 @@ img {
 
 /* ---------------------------------- */
 
-.ui-big-image {
+/*.ui-big-image {
   opacity: 0;
   transform: translateX(-100%);
 
@@ -289,15 +286,15 @@ img {
 
 .ui-big-image[data-active] ~ .ui-big-image {
   transform: translateX(100%);
-}
+}*/
 
-.ui-big-image[data-active] {
-  opacity: 1;
-  transform: translateX(0%);
-  img {
-    transform: scale(1);
-  }
-}
+//.ui-big-image[data-active] {
+//  opacity: 1;
+//  transform: translateX(0%);
+//  img {
+//    transform: scale(1);
+//  }
+//}
 
 /* ---------------------------------- */
 
