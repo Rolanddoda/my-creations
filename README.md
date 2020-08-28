@@ -1,4 +1,4 @@
-# my-dashboard
+# dashboard-of-projects
 
 ## Project setup
 ```
