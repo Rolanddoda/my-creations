@@ -1,5 +1,5 @@
 <template>
-  <div id="app" data-state="0">
+  <div id="gliding-gallery" data-state="0">
     <Images :images="images" />
     <Thumbnails :images="images" @send="send" />
     <Articles :images="images" @send="send" />
@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#app {
+#gliding-gallery {
   width: 100%;
   height: 100%;
   overflow: hidden;

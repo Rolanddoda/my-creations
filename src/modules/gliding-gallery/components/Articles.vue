@@ -1,6 +1,6 @@
 <template>
-  <div class="ui-content">
-    <nav class="ui-nav">
+  <div class="articles-wrapper">
+    <nav class="prev-next-btn">
       <button
         id="prev"
         tabindex="-1"
@@ -19,15 +19,15 @@
       </button>
     </nav>
 
-    <div class="ui-articles">
+    <div class="articles">
       <article
         v-for="(article, index) of images"
         :key="article.src"
-        class="ui-article"
+        class="article"
         :data-key="index"
       >
-        <h2 class="ui-heading">{{ article.title }}</h2>
-        <p class="ui-paragraph">
+        <h2 class="heading">{{ article.title }}</h2>
+        <p class="paragraph">
           {{ article.description }}
         </p>
       </article>
@@ -47,13 +47,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ui-content {
+.articles-wrapper {
   position: absolute;
   width: 40%;
   right: 5%;
   bottom: 0;
 
-  > .ui-nav {
+  > .prev-next-btn {
     position: absolute;
     right: 0;
     bottom: 100%;
@@ -84,7 +84,7 @@ export default {
     }
   }
 
-  > .ui-articles {
+  > .articles {
     background: #493e56;
     color: white;
     display: flex;
@@ -92,7 +92,7 @@ export default {
     overflow: hidden;
   }
 
-  .ui-article {
+  .article {
     padding: 1.5rem;
     width: 100%;
     margin-right: -100%;
@@ -115,7 +115,7 @@ export default {
       z-index: 1;
     }
 
-    &[data-active] ~ .ui-article {
+    &[data-active] ~ .article {
       transform: translateX(100%);
     }
 
@@ -127,7 +127,7 @@ export default {
       }
     }
 
-    > .ui-heading {
+    > .heading {
       margin: 0 0 0.5rem;
       font-size: 1rem;
       font-weight: normal;
@@ -142,7 +142,7 @@ export default {
       }
     }
 
-    > .ui-paragraph {
+    > .paragraph {
       margin: 0;
       font-size: 0.7rem;
       line-height: 1.7;
