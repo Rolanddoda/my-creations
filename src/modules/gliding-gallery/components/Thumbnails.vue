@@ -6,7 +6,7 @@
       class="thumbnail"
       tabindex="-1"
       :data-key="index"
-      @click="$emit('send', index)"
+      @click="$emit('change-active', index)"
     >
       <img :src="image.src" />
       <div class="ui-cuticle" data-flip-key="cuticle"></div>

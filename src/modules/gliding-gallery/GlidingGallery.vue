@@ -1,87 +1,66 @@
 <template>
-  <div id="gliding-gallery" data-state="0">
+  <div id="gliding-gallery">
     <Images :images="images" />
-    <Thumbnails :images="images" @send="send" />
-    <Articles :images="images" @send="send" />
+    <Thumbnails :images="images" @change-active="changeActive" />
+    <Articles :images="images" @change-active="changeActive" />
   </div>
 </template>
 
 <script>
+import { getNrInRange } from "@/shared/functions";
 import images from "./images-articles";
+// Libraries
 import Flipping from "flipping/dist/flipping.web";
 // Components
 import Images from "./components/Images";
 import Thumbnails from "./components/Thumbnails";
 import Articles from "./components/Articles";
 
-const flipping = new Flipping();
-let activeBoxIndex = 0;
-let state = {
-  photo: 0
-};
+let activeIndex = 0;
 
 export default {
-  components: {
-    Images,
-    Thumbnails,
-    Articles
-  },
-
-  data: () => ({
-    flipping: null
-  }),
+  components: { Images, Thumbnails, Articles },
 
   created() {
     this.images = images;
   },
 
   mounted() {
-    this.send(0);
+    this.changeActive(0);
   },
 
   methods: {
-    changeActive(box) {
+    removeAndSetDataActive(elements, newIndex) {
+      const { images, thumbnails, articles } = elements;
       const flipping = new Flipping();
+
       flipping.read();
-      const boxes = this.$el.querySelectorAll(".thumbnail");
-      boxes[activeBoxIndex].removeAttribute("data-active");
-      boxes[box].setAttribute("data-active", "");
-      activeBoxIndex = box;
+
+      images[activeIndex].removeAttribute("data-active");
+      thumbnails[activeIndex].removeAttribute("data-active");
+      articles[activeIndex].removeAttribute("data-active");
+
+      images[newIndex].setAttribute("data-active", "");
+      thumbnails[newIndex].setAttribute("data-active", "");
+      articles[newIndex].setAttribute("data-active", "");
+
       flipping.flip();
     },
 
-    send(event) {
-      const elImages = Array.from(document.querySelectorAll(".image"));
-      // read cuticle positions
-      flipping.read();
+    changeActive(eventOrNewIndex) {
+      let newIndex = activeIndex;
 
-      const elActives = document.querySelectorAll("[data-active]");
+      if (["PREV", "NEXT"].includes(eventOrNewIndex)) {
+        newIndex += eventOrNewIndex === "PREV" ? -1 : 1;
+      } else newIndex = eventOrNewIndex;
 
-      Array.from(elActives).forEach(el => el.removeAttribute("data-active"));
+      const images = this.$el.querySelectorAll(".image");
+      const thumbnails = this.$el.querySelectorAll(".thumbnail");
+      const articles = this.$el.querySelectorAll(".article");
 
-      switch (event) {
-        case "PREV":
-          state.photo--;
-          break;
-        case "NEXT":
-          state.photo++;
-          break;
-        default:
-          state.photo = +event;
-          break;
-      }
-
-      var len = elImages.length;
-      state.photo = Math.max(0, Math.min(state.photo, len - 1));
-
-      Array.from(
-        document.querySelectorAll(`[data-key="${state.photo}"]`)
-      ).forEach(el => {
-        el.setAttribute("data-active", true);
-      });
-
-      // execute the FLIP animation
-      flipping.flip();
+      newIndex = getNrInRange(0, images.length - 1, newIndex);
+      this.removeAndSetDataActive({ images, thumbnails, articles }, newIndex);
+      activeIndex = newIndex;
     }
   }
 };
@@ -89,11 +68,12 @@ export default {
 
 <style lang="scss" scoped>
 #gliding-gallery {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   --gold: #d4a12d;
   --purple: #493e56;
   --duration: 0.7s;
+
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 </style>

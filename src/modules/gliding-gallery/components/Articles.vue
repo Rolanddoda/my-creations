@@ -5,7 +5,7 @@
         id="prev"
         tabindex="-1"
         title="Previous"
-        @click="$emit('send', 'PREV')"
+        @click="$emit('change-active', 'PREV')"
       >
         &lt;
       </button>
@@ -13,7 +13,7 @@
         id="next"
         tabindex="-1"
         title="Next"
-        @click="$emit('send', 'NEXT')"
+        @click="$emit('change-active', 'NEXT')"
       >
         &gt;
       </button>
