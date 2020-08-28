@@ -2,31 +2,7 @@
   <div id="app" data-state="0">
     <Images :images="images" />
     <Thumbnails :images="images" @send="send" />
-
-    <div class="ui-content">
-      <nav class="ui-nav">
-        <button id="prev" tabindex="-1" title="Previous" @click="send('PREV')">
-          &lt;
-        </button>
-        <button id="next" tabindex="-1" title="Next" @click="send('NEXT')">
-          &gt;
-        </button>
-      </nav>
-
-      <div class="ui-articles">
-        <article
-          v-for="(article, index) of images"
-          :key="article.src"
-          class="ui-article"
-          :data-key="index"
-        >
-          <h2 class="ui-heading">{{ article.title }}</h2>
-          <p class="ui-paragraph">
-            {{ article.description }}
-          </p>
-        </article>
-      </div>
-    </div>
+    <Articles :images="images" @send="send" />
   </div>
 </template>
 
@@ -36,6 +12,7 @@ import Flipping from "flipping/dist/flipping.web";
 // Components
 import Images from "./components/Images";
 import Thumbnails from "./components/Thumbnails";
+import Articles from "./components/Articles";
 
 const flipping = new Flipping();
 let activeBoxIndex = 0;
@@ -46,7 +23,8 @@ let state = {
 export default {
   components: {
     Images,
-    Thumbnails
+    Thumbnails,
+    Articles
   },
 
   data: () => ({
@@ -84,11 +62,9 @@ export default {
       switch (event) {
         case "PREV":
           state.photo--;
-          // Math.max(state.photo - 1, 0);
           break;
         case "NEXT":
           state.photo++;
-          // Math.min(state.photo + 1, elImages.length - 1);
           break;
         default:
           state.photo = +event;
@@ -96,8 +72,6 @@ export default {
       }
 
       var len = elImages.length;
-      // Loop Around
-      //state.photo = ( ( state.photo % len) + len ) % len;
       state.photo = Math.max(0, Math.min(state.photo, len - 1));
 
       Array.from(
@@ -114,137 +88,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$gold: #d4a12d;
-$purple: #493e56;
-$duration: 0.7s;
-$easing: cubic-bezier(0.25, 0, 0.1, 1);
-
-img {
-  max-width: 100%;
-}
-
 #app {
-  width: 90%;
-  height: 85%;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   --gold: #d4a12d;
   --purple: #493e56;
   --duration: 0.7s;
-}
-
-.ui-content {
-  position: absolute;
-  width: 40%;
-  right: 5%;
-  bottom: 0;
-}
-
-.ui-articles {
-  background: #493e56;
-  color: white;
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-}
-
-.ui-article {
-  padding: 1.5rem;
-  width: 100%;
-  margin-right: -100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.ui-paragraph {
-  margin: 0;
-  font-size: 0.7rem;
-  line-height: 1.7;
-}
-
-.ui-nav {
-  position: absolute;
-  right: 0;
-  bottom: 100%;
-  background: inherit;
-
-  button {
-    background: $purple;
-    border: none;
-    appearance: none;
-    padding: 0.5em;
-    width: 2em;
-    color: #fff;
-    font-family: monospace;
-    transition: inherit;
-
-    transition-duration: 300ms;
-    &:hover,
-    &:focus {
-      background: $gold;
-      outline: none;
-    }
-
-    &:active {
-      outline: none;
-      transform: translateY(0.25em);
-      transition-duration: 100ms;
-    }
-  }
-}
-
-.ui-heading {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-  font-weight: normal;
-
-  &:before {
-    content: "Animator";
-    font-size: 0.5rem;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-  }
-}
-
-.ui-article {
-  transform: translateX(-100%);
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $gold;
-    opacity: 1;
-    transition-duration: $duration / 2;
-    z-index: 1;
-  }
-}
-
-.ui-article[data-active] ~ .ui-article {
-  transform: translateX(100%);
-}
-
-.ui-article[data-active] {
-  transform: translateX(0%);
-
-  &:before {
-    opacity: 0;
-  }
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  position: relative;
-  transition: transform $duration cubic-bezier(0.5, 0, 0.5, 1),
-    opacity $duration cubic-bezier(0.5, 0, 0.5, 1),
-    filter $duration cubic-bezier(0.5, 0, 0.5, 1);
 }
 </style>
