@@ -1,51 +1,30 @@
 <template>
   <div id="app" data-state="0">
     <div class="ui-big-images">
-      <div class="ui-big-image" data-key="0">
-        <img src="https://picsum.photos/1200/1200/?image=1005" alt="" />
-      </div>
-      <div class="ui-big-image" data-key="1">
-        <img src="https://picsum.photos/1200/1200/?image=804" alt="" />
-      </div>
-      <div class="ui-big-image" data-key="2">
-        <img src="https://picsum.photos/1200/1200/?image=838" alt="" />
-      </div>
-      <div class="ui-big-image" data-key="3">
-        <img src="https://picsum.photos/1200/1200/?image=832" alt="" />
-      </div>
-      <div class="ui-big-image" data-key="4">
-        <img src="https://picsum.photos/1200/1200/?image=836" alt="" />
-      </div>
-      <div class="ui-big-image" data-key="5">
-        <img src="https://picsum.photos/1200/1200/?image=823" alt="" />
+      <div
+        class="ui-big-image"
+        v-for="(image, index) of images"
+        :key="image.src"
+        :data-key="index"
+      >
+        <img :src="image.src" />
       </div>
     </div>
+
     <div class="ui-thumbnails">
-      <div class="ui-thumbnail" tabindex="-1" data-key="0" @click="send(0)">
-        <img src="https://picsum.photos/1200/1200/?image=1005" alt="" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-      <div class="ui-thumbnail" tabindex="-1" data-key="1" @click="send(1)">
-        <img src="https://picsum.photos/1200/1200/?image=804" alt="" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-      <div class="ui-thumbnail" tabindex="-1" data-key="2" @click="send(2)">
-        <img src="https://picsum.photos/1200/1200/?image=838" alt="" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-      <div class="ui-thumbnail" tabindex="-1" data-key="3" @click="send(3)">
-        <img src="https://picsum.photos/1200/1200/?image=832" alt="" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-      <div class="ui-thumbnail" tabindex="-1" data-key="4" @click="send(4)">
-        <img src="https://picsum.photos/1200/1200/?image=836" alt="" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-      <div class="ui-thumbnail" tabindex="-1" data-key="5" @click="send(5)">
-        <img src="https://picsum.photos/1200/1200/?image=823" alt="" />
+      <div
+        v-for="(image, index) of images"
+        :key="image.src"
+        class="ui-thumbnail"
+        tabindex="-1"
+        :data-key="index"
+        @click="send(index)"
+      >
+        <img :src="image.src" />
         <div class="ui-cuticle" data-flip-key="cuticle"></div>
       </div>
     </div>
+
     <div class="ui-content">
       <nav class="ui-nav">
         <button id="prev" tabindex="-1" title="Previous" @click="send('PREV')">
@@ -57,44 +36,15 @@
       </nav>
 
       <div class="ui-articles">
-        <article class="ui-article" data-key="0">
-          <h2 class="ui-heading">Stephen Shaw</h2>
+        <article
+          v-for="(article, index) of images"
+          :key="article.src"
+          class="ui-article"
+          :data-key="index"
+        >
+          <h2 class="ui-heading">{{ article.title }}</h2>
           <p class="ui-paragraph">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
-            cupiditate assumenda nemo delectus totam atque quas suscipit dicta.
-          </p>
-        </article>
-        <article class="ui-article" data-key="1">
-          <h2 class="ui-heading">David Khourshid</h2>
-          <p class="ui-paragraph">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-            sapiente soluta iusto molestias ullam.
-          </p>
-        </article>
-        <article class="ui-article" data-key="2">
-          <h2 class="ui-heading">Coding Compadre</h2>
-          <p class="ui-paragraph">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          </p>
-        </article>
-        <article class="ui-article" data-key="3">
-          <h2 class="ui-heading">Boolean Buddy</h2>
-          <p class="ui-paragraph">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          </p>
-        </article>
-        <article class="ui-article" data-key="4">
-          <h2 class="ui-heading">Animation Amigo</h2>
-          <p class="ui-paragraph">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias
-            exercitationem voluptatibus
-          </p>
-        </article>
-        <article class="ui-article" data-key="5">
-          <h2 class="ui-heading">Keyframe Companion</h2>
-          <p class="ui-paragraph">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            soluta reprehenderit, ut doloribus corrupti
+            {{ article.description }}
           </p>
         </article>
       </div>
@@ -115,6 +65,46 @@ export default {
   data: () => ({
     flipping: null
   }),
+
+  created() {
+    this.images = [
+      {
+        src: "https://picsum.photos/1200/1200/?image=1005",
+        title: "Stephen Shaw",
+        description: "Lorem5"
+      },
+      {
+        src: "https://picsum.photos/1200/1200/?image=804",
+        title: "Keyframes",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
+      },
+      {
+        src: "https://picsum.photos/1200/1200/?image=838",
+        title: "David Khourshid",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
+      },
+      {
+        src: "https://picsum.photos/1200/1200/?image=832",
+        title: "Roland Doda",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
+      },
+      {
+        src: "https://picsum.photos/1200/1200/?image=836",
+        title: "Mariglen Doda",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
+      },
+      {
+        src: "https://picsum.photos/1200/1200/?image=823",
+        title: "Klodian shaba",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque iure nam quam quasi reprehenderit."
+      }
+    ];
+  },
 
   mounted() {
     this.send(0);
