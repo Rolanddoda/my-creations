@@ -1,20 +1,7 @@
 <template>
   <div id="app" data-state="0">
-    <BigImages :images="images" />
-
-    <div class="ui-thumbnails">
-      <div
-        v-for="(image, index) of images"
-        :key="image.src"
-        class="ui-thumbnail"
-        tabindex="-1"
-        :data-key="index"
-        @click="send(index)"
-      >
-        <img :src="image.src" />
-        <div class="ui-cuticle" data-flip-key="cuticle"></div>
-      </div>
-    </div>
+    <Images :images="images" />
+    <Thumbnails :images="images" @send="send" />
 
     <div class="ui-content">
       <nav class="ui-nav">
@@ -47,7 +34,8 @@
 import images from "./images-articles";
 import Flipping from "flipping/dist/flipping.web";
 // Components
-import BigImages from "./components/BigImages";
+import Images from "./components/Images";
+import Thumbnails from "./components/Thumbnails";
 
 const flipping = new Flipping();
 let activeBoxIndex = 0;
@@ -57,7 +45,8 @@ let state = {
 
 export default {
   components: {
-    BigImages
+    Images,
+    Thumbnails
   },
 
   data: () => ({
@@ -76,7 +65,7 @@ export default {
     changeActive(box) {
       const flipping = new Flipping();
       flipping.read();
-      const boxes = this.$el.querySelectorAll(".ui-thumbnail");
+      const boxes = this.$el.querySelectorAll(".thumbnail");
       boxes[activeBoxIndex].removeAttribute("data-active");
       boxes[box].setAttribute("data-active", "");
       activeBoxIndex = box;
@@ -84,7 +73,7 @@ export default {
     },
 
     send(event) {
-      const elImages = Array.from(document.querySelectorAll(".ui-big-image"));
+      const elImages = Array.from(document.querySelectorAll(".image"));
       // read cuticle positions
       flipping.read();
 
@@ -138,62 +127,9 @@ img {
   width: 90%;
   height: 85%;
   overflow: hidden;
-}
-
-//.ui-big-images {
-//  position: absolute;
-//  height: 100%;
-//  width: 100%;
-//  overflow: hidden;
-//  display: flex;
-//}
-//
-//.ui-big-image {
-//  width: 100%;
-//  margin-right: -100%;
-//
-//  img {
-//    object-fit: cover;
-//    object-position: center 20%;
-//    @media (max-height: 600px) {
-//      object-position: center center;
-//    }
-//    width: 100%;
-//    height: 100%;
-//    display: block;
-//  }
-//}
-
-.ui-thumbnails {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0.5rem calc(45% + 0.5rem) 0 1rem;
-}
-
-.ui-thumbnail {
-  display: block;
-  margin-right: 0.5rem;
-  padding: 0.5rem 0;
-  cursor: pointer;
-}
-
-.ui-cuticle {
-  background-color: $gold;
-  position: absolute;
-  bottom: 0;
-  height: 0.25rem;
-  width: 100%;
-}
-
-.ui-thumbnail > img {
-  width: auto;
+  --gold: #d4a12d;
+  --purple: #493e56;
+  --duration: 0.7s;
 }
 
 .ui-content {
@@ -273,31 +209,6 @@ img {
   }
 }
 
-/* ---------------------------------- */
-
-/*.ui-big-image {
-  opacity: 0;
-  transform: translateX(-100%);
-
-  img {
-    transform: scale(0.85);
-  }
-}
-
-.ui-big-image[data-active] ~ .ui-big-image {
-  transform: translateX(100%);
-}*/
-
-//.ui-big-image[data-active] {
-//  opacity: 1;
-//  transform: translateX(0%);
-//  img {
-//    transform: scale(1);
-//  }
-//}
-
-/* ---------------------------------- */
-
 .ui-article {
   transform: translateX(-100%);
 
@@ -326,45 +237,6 @@ img {
     opacity: 0;
   }
 }
-
-/* ---------------------------------- */
-
-.ui-thumbnail {
-  > img {
-    filter: grayscale(100%);
-    transition-duration: $duration / 2;
-  }
-
-  &:active {
-    > img {
-      transform: scale(0.9);
-      transition-duration: 100ms;
-    }
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.ui-cuticle {
-  display: none;
-}
-
-.ui-thumbnail {
-  &[data-active],
-  &:hover {
-    > img {
-      filter: grayscale(0%);
-    }
-  }
-
-  &[data-active] .ui-cuticle {
-    display: block;
-  }
-}
-
-/* ---------------------------------- */
 
 *,
 *:before,

@@ -1,7 +1,7 @@
 <template>
-  <div class="ui-big-images">
+  <div class="images">
     <div
-      class="ui-big-image"
+      class="image"
       v-for="(image, index) of images"
       :key="image.src"
       :data-key="index"
@@ -23,14 +23,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ui-big-images {
+.images {
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden;
   display: flex;
 
-  > .ui-big-image {
+  > .image {
     width: 100%;
     margin-right: -100%;
     opacity: 0;
@@ -52,7 +52,7 @@ export default {
       transition: transform 0.7s cubic-bezier(0.5, 0, 0.5, 1);
     }
 
-    &[data-active] ~ .ui-big-image {
+    &[data-active] ~ .image {
       transform: translateX(100%);
     }
 
