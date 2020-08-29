@@ -80,11 +80,11 @@ export default {
   computed: {
     drawerRight() {
       return this.position.includes("right");
-    }
-  },
+    },
 
-  created() {
-    this.routes = routes;
+    routes() {
+      return routes.filter(route => route.path !== "/");
+    }
   }
 };
 </script>

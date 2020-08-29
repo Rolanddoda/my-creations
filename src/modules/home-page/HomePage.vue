@@ -24,8 +24,10 @@
 import { routes } from "@/packages/router";
 
 export default {
-  created() {
-    this.routes = routes;
+  computed: {
+    routes() {
+      return routes.filter(route => route.path !== "/");
+    }
   }
 };
 </script>
