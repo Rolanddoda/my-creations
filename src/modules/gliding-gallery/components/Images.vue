@@ -28,11 +28,12 @@ export default {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  display: flex;
+  display: grid;
+  grid-template: 1fr / 1fr;
 
   > .image {
     width: 100%;
-    margin-right: -100%;
+    grid-area: 1 / 1 / -1 / -1;
     opacity: 0;
     transform: translateX(-100%);
     transition: transform 0.7s cubic-bezier(0.5, 0, 0.5, 1),
