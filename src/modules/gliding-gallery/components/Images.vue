@@ -27,9 +27,10 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
-  overflow: hidden;
   display: grid;
   grid-template: 1fr / 1fr;
+  overflow: hidden;
+  box-shadow: 0 0 5px;
 
   > .image {
     width: 100%;

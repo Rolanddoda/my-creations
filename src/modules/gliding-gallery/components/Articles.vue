@@ -49,7 +49,6 @@ export default {
 <style lang="scss" scoped>
 .articles-wrapper {
   position: relative;
-  padding-bottom: 15px;
 
   > .prev-next-btn {
     position: absolute;

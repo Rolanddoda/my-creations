@@ -98,7 +98,7 @@ export default {
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 500px;
-  grid-template-rows: 1fr 150px;
+  grid-template-rows: 1fr 15vmin;
   grid-template-areas: "image image" "thumbnail article";
   padding: 80px 150px;
   overflow: hidden;
