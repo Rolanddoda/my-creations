@@ -1,5 +1,13 @@
 <template>
   <div id="gliding-gallery">
+    <div class="bg-images">
+      <div
+        class="bg-image"
+        v-for="image of images"
+        :key="image.src"
+        :style="{ backgroundImage: `url(${image.src})` }"
+      ></div>
+    </div>
     <Images :images="images" style="grid-area: image" />
     <Thumbnails
       :images="images"
@@ -39,16 +47,18 @@ export default {
 
   methods: {
     removeAndSetDataActive(elements, newIndex) {
-      const { images, thumbnails, articles } = elements;
+      const { bgImages, images, thumbnails, articles } = elements;
       const flipping = new Flipping();
 
       flipping.read();
 
       images[activeIndex].removeAttribute("data-active");
+      bgImages[activeIndex].removeAttribute("data-active");
       thumbnails[activeIndex].removeAttribute("data-active");
       articles[activeIndex].removeAttribute("data-active");
 
       images[newIndex].setAttribute("data-active", "");
+      bgImages[newIndex].setAttribute("data-active", "");
       thumbnails[newIndex].setAttribute("data-active", "");
       articles[newIndex].setAttribute("data-active", "");
 
@@ -63,11 +73,15 @@ export default {
       } else newIndex = eventOrNewIndex;
 
       const images = this.$el.querySelectorAll(".image");
+      const bgImages = this.$el.querySelectorAll(".bg-image");
       const thumbnails = this.$el.querySelectorAll(".thumbnail");
       const articles = this.$el.querySelectorAll(".article");
 
       newIndex = getNrInRange(0, images.length - 1, newIndex);
-      this.removeAndSetDataActive({ images, thumbnails, articles }, newIndex);
+      this.removeAndSetDataActive(
+        { bgImages, images, thumbnails, articles },
+        newIndex
+      );
       activeIndex = newIndex;
     }
   }
@@ -88,5 +102,33 @@ export default {
   grid-template-areas: "image image" "thumbnail article";
   padding: 80px 150px;
   overflow: hidden;
+
+  .bg-images {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template: 1fr / 1fr;
+
+    .bg-image {
+      grid-area: 1 / 1 / -1/ -1;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transform: translateX(100%);
+      transition: transform var(--duration) cubic-bezier(0.5, 0, 0.5, 1);
+
+      &[data-active] ~ .bg-image {
+        transform: translateX(-100%);
+      }
+
+      &[data-active] {
+        transform: translateX(0);
+      }
+    }
+  }
 }
 </style>
