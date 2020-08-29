@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 .images {
-  position: absolute;
+  position: relative;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -40,13 +40,11 @@ export default {
       opacity 0.7s cubic-bezier(0.5, 0, 0.5, 1);
 
     img {
+      position: absolute;
       transform: scale(0.85);
       max-width: 100%;
       object-fit: cover;
-      object-position: center 20%;
-      @media (max-height: 600px) {
-        object-position: center center;
-      }
+      object-position: center center;
       width: 100%;
       height: 100%;
       display: block;

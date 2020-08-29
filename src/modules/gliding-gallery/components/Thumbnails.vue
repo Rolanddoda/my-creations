@@ -27,20 +27,15 @@ export default {
 
 <style lang="scss" scoped>
 .thumbnails {
-  position: absolute;
   width: 100%;
-  bottom: 0;
-  left: 0;
   background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0.5rem calc(45% + 0.5rem) 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: start;
+  overflow: hidden;
 
   > .thumbnail {
     position: relative;
-    display: block;
     margin-right: 0.5rem;
     padding: 0.5rem 0;
     cursor: pointer;
@@ -67,9 +62,9 @@ export default {
     }
 
     > img {
-      width: auto;
-      max-width: 100%;
       filter: grayscale(100%);
+      width: 100%;
+      height: 110px;
     }
 
     > .ui-cuticle {

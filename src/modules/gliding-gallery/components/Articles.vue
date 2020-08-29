@@ -48,10 +48,8 @@ export default {
 
 <style lang="scss" scoped>
 .articles-wrapper {
-  position: absolute;
-  width: 40%;
-  right: 5%;
-  bottom: 0;
+  position: relative;
+  padding-bottom: 15px;
 
   > .prev-next-btn {
     position: absolute;
@@ -85,6 +83,7 @@ export default {
   }
 
   > .articles {
+    height: 100%;
     background: #493e56;
     color: white;
     display: flex;

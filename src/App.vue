@@ -115,3 +115,10 @@ export default {
   }
 }
 </style>
+
+<style>
+/* Global styles */
+html {
+  overflow-y: auto !important;
+}
+</style>

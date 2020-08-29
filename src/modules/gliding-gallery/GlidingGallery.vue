@@ -1,8 +1,16 @@
 <template>
   <div id="gliding-gallery">
-    <Images :images="images" />
-    <Thumbnails :images="images" @change-active="changeActive" />
-    <Articles :images="images" @change-active="changeActive" />
+    <Images :images="images" style="grid-area: image" />
+    <Thumbnails
+      :images="images"
+      @change-active="changeActive"
+      style="grid-area: thumbnail"
+    />
+    <Articles
+      :images="images"
+      @change-active="changeActive"
+      style="grid-area: article"
+    />
   </div>
 </template>
 
@@ -72,8 +80,13 @@ export default {
   --purple: #493e56;
   --duration: 0.7s;
 
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  grid-template-rows: 1fr 150px;
+  grid-template-areas: "image image" "thumbnail article";
+  padding: 80px 150px;
   overflow: hidden;
 }
 </style>
