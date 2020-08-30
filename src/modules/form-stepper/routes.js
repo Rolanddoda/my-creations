@@ -1,5 +1,5 @@
 export default {
-  path: "form-stepper",
+  path: "/form-stepper",
   name: "Form Stepper",
   component: () => import("./FormStepper"),
   meta: {
