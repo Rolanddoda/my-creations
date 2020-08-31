@@ -1,9 +1,13 @@
 <template>
-  <Grid class="form-stepper fill-height pa-15" data-active-step="1">
+  <Grid
+    class="form-stepper fill-height pa-15"
+    :style="{ '--step': activeStep }"
+  >
     <Grid align-items="space-between" class="steps">
       <Grid
         place-items="center"
         class="step"
+        :data-active="step === activeStep"
         v-for="step in totalSteps"
         :key="step"
       >
@@ -18,6 +22,10 @@
 
 <script>
 export default {
+  data: () => ({
+    activeStep: 1
+  }),
+
   computed: {
     totalSteps() {
       return 5;
@@ -30,11 +38,13 @@ export default {
 .form-stepper {
   --active-color: #3187f2;
   --inactive-color: #aaa;
+  --step-size: 40px;
+  --line-size: 5px;
 
   .steps {
     position: relative;
     height: 100%;
-    width: 40px;
+    width: var(--step-size);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -42,17 +52,17 @@ export default {
 
   .line {
     position: absolute;
-    top: 40px;
-    left: calc(50% - 2.5px);
-    width: 5px;
-    height: calc(100% - 2 * 40px);
+    top: var(--step-size);
+    left: calc(50% - var(--line-size) / 2);
+    width: var(--line-size);
+    height: calc(100% - 2 * var(--step-size));
     background: var(--inactive-color);
 
     .line-complete {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: blue;
+      background: var(--active-color);
       transform: scaleY(calc(1 / 5 / 2));
       transform-origin: top;
     }
@@ -60,25 +70,29 @@ export default {
 
   .step {
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: var(--step-size);
+    height: var(--step-size);
     border-radius: 50%;
     background: var(--inactive-color);
     color: white;
     z-index: 1;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 130%;
-      height: 130%;
-      margin: -15%;
-      border: solid 2px var(--inactive-color);
-      border-radius: 50%;
+    &[data-active] {
+      background: var(--active-color);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 130%;
+        height: 130%;
+        margin: -15%;
+        border: solid 2px var(--active-color);
+        border-radius: 50%;
+      }
     }
   }
 }
