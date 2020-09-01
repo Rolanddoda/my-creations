@@ -36,12 +36,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/shared/styles/variables";
-
 .article {
   grid-area: 1 / -1;
   transform: translateY(-100%);
-  transition: transform 0.5s $easing;
+  transition: 0.5s cubic-bezier(0.36, 0, 0.66, -0.56);
 
   &[data-active] {
     transform: translateY(0);

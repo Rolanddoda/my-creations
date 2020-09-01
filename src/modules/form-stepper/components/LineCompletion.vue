@@ -21,7 +21,7 @@
     background: var(--active-color);
     transform: scaleY(var(--line-completion));
     transform-origin: top;
-    transition: transform 0.3s cubic-bezier(0.36, 0, 0.66, -0.56);
+    transition: transform 0.5s cubic-bezier(0.36, 0, 0.66, -0.56);
   }
 }
 </style>
