@@ -10,6 +10,7 @@
         :data-active="step === activeStep"
         v-for="step in totalSteps"
         :key="step"
+        @click.native="activeStep = step"
       >
         {{ step }}
       </Grid>
@@ -22,15 +23,16 @@
 
 <script>
 export default {
+  props: {
+    totalSteps: {
+      type: Number,
+      default: 5
+    }
+  },
+
   data: () => ({
     activeStep: 1
-  }),
-
-  computed: {
-    totalSteps() {
-      return 5;
-    }
-  }
+  })
 };
 </script>
 
@@ -47,25 +49,7 @@ export default {
     width: var(--step-size);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .line {
-    position: absolute;
-    top: var(--step-size);
-    left: calc(50% - var(--line-size) / 2);
-    width: var(--line-size);
-    height: calc(100% - 2 * var(--step-size));
-    background: var(--inactive-color);
-
-    .line-complete {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: var(--active-color);
-      transform: scaleY(calc(1 / 5 / 2));
-      transform-origin: top;
-    }
+    justify-content: space-around;
   }
 
   .step {
@@ -76,6 +60,8 @@ export default {
     background: var(--inactive-color);
     color: white;
     z-index: 1;
+    cursor: pointer;
+    user-select: none;
 
     &[data-active] {
       background: var(--active-color);
@@ -93,6 +79,25 @@ export default {
         border: solid 2px var(--active-color);
         border-radius: 50%;
       }
+    }
+  }
+
+  .line {
+    position: absolute;
+    left: calc(50% - var(--line-size) / 2);
+    width: var(--line-size);
+    height: 100%;
+    background: var(--inactive-color);
+
+    .line-complete {
+      --line-completion: calc(1 / 5 * var(--step));
+
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--active-color);
+      transform: scaleY(var(--line-completion));
+      transform-origin: top;
     }
   }
 }
