@@ -41,14 +41,14 @@ export default {
 .article {
   grid-area: 1 / -1;
   transform: translateY(-100%);
-  transition: transform 0.5 $easing;
-
-  ~ .article {
-    transform: translateY(100%);
-  }
+  transition: transform 0.5s $easing;
 
   &[data-active] {
     transform: translateY(0);
+
+    ~ .article {
+      transform: translateY(100%);
+    }
   }
 }
 </style>

@@ -20,6 +20,8 @@ export default {
 @import "~@/shared/styles/variables";
 
 .step {
+  --transition: 0.1s #{$easing} 0.25s;
+
   position: relative;
   width: var(--step-size);
   height: var(--step-size);
@@ -29,7 +31,7 @@ export default {
   z-index: 1;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.1s $easing 0.25s;
+  transition: background-color var(--transition);
 
   &::before {
     content: "";
@@ -44,7 +46,7 @@ export default {
     border: solid 2px var(--active-color);
     border-radius: 50%;
     transform: scale(0.8);
-    transition: transform 0.1s $easing 0.25s;
+    transition: transform var(--transition);
   }
 
   &[data-active] {

@@ -17,7 +17,7 @@
       <LineCompletion />
     </Grid>
 
-    <Grid gtc="1fr" gtr="1fr" class="articles">
+    <Grid gtc="1fr" gtr="1fr" class="articles overflow-hidden">
       <Article
         v-for="step in totalSteps"
         :key="step"
