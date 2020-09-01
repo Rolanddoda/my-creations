@@ -17,14 +17,16 @@
       <LineCompletion />
     </Grid>
 
-    <div class="articles">
+    <Grid gtc="1fr" gtr="1fr" class="articles">
       <Article
         v-for="step in totalSteps"
         :key="step"
         :step="step"
         :active="step === activeStep"
+        :no-next="step === totalSteps"
+        @next="activeStep++"
       />
-    </div>
+    </Grid>
   </Grid>
 </template>
 
@@ -60,7 +62,7 @@ export default {
   --step-size: 40px;
   --line-size: 5px;
 
-  .steps {
+  > .steps {
     position: relative;
     height: 100%;
     width: var(--step-size);
