@@ -1,6 +1,8 @@
 <template>
   <Grid
     class="form-stepper fill-height pa-15"
+    gtc="auto 1fr"
+    gap="20px"
     :style="{ '--step': activeStep }"
   >
     <Grid align-items="space-between" class="steps">
@@ -14,17 +16,28 @@
 
       <LineCompletion />
     </Grid>
+
+    <div class="articles">
+      <Article
+        v-for="step in totalSteps"
+        :key="step"
+        :step="step"
+        :active="step === activeStep"
+      />
+    </div>
   </Grid>
 </template>
 
 <script>
 import LineCompletion from "./components/LineCompletion";
 import Step from "./components/Step";
+import Article from "./components/Article";
 
 export default {
   components: {
     LineCompletion,
-    Step
+    Step,
+    Article
   },
 
   props: {
