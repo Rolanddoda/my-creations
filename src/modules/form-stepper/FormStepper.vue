@@ -59,7 +59,7 @@ export default {
     width: var(--step-size);
     height: var(--step-size);
     border-radius: 50%;
-    background: var(--inactive-color);
+    background: var(--active-color);
     color: white;
     z-index: 1;
     cursor: pointer;
@@ -76,7 +76,7 @@ export default {
       width: 130%;
       height: 130%;
       margin: -15%;
-      border: solid 2px var(--inactive-color);
+      border: solid 2px var(--active-color);
       border-radius: 50%;
       transform: scale(0.8);
       transition: transform 0.1s $easing 0.25s;
@@ -84,6 +84,14 @@ export default {
 
     &[data-active] {
       background: var(--active-color);
+
+      ~ .step {
+        background: var(--inactive-color);
+
+        &::before {
+          border-color: var(--inactive-color);
+        }
+      }
 
       &::before {
         transform: scale(1);
@@ -108,7 +116,7 @@ export default {
       background: var(--active-color);
       transform: scaleY(var(--line-completion));
       transform-origin: top;
-      transition: transform 0.25s cubic-bezier(0.36, 0, 0.66, -0.56);
+      transition: transform 0.3s cubic-bezier(0.36, 0, 0.66, -0.56);
     }
   }
 }
