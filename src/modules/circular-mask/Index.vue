@@ -6,6 +6,8 @@
       :product="product"
       @click.native="changeActiveProduct"
     />
+
+    <div class="mouse-tracker"></div>
   </main>
 </template>
 
@@ -47,6 +49,7 @@ export default {
 
   mounted() {
     this.changeActiveProduct();
+    this.$el.addEventListener("mousemove", this.setMouseMovePosition);
   },
 
   methods: {
@@ -83,9 +86,32 @@ export default {
           animationInProgress = false;
         }
       });
+    },
+
+    setMouseMovePosition(e) {
+      this.$el.style.setProperty("--mouseX", e.clientX);
+      this.$el.style.setProperty("--mouseY", e.clientY);
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.mouse-tracker {
+  --size: 70px;
+  --x: calc(1px * var(--mouseX) - var(--size) / 2);
+  --y: calc(1px * var(--mouseY) - var(--size) / 2);
+  --translateX: calc(var(--x) + 4px);
+  --translateY: calc(var(--y) + 8px);
+
+  position: fixed;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 2px solid;
+  z-index: 3;
+  opacity: 0.5;
+  transform: translate(var(--translateX), var(--translateY));
+  pointer-events: none;
+}
+</style>
