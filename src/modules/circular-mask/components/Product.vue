@@ -1,8 +1,9 @@
 <template>
-  <div
-    class="product fill-height"
-    :style="{ background: `url(${product.image}) center / cover` }"
-  >
+  <div class="product fill-height" :data-active="active">
+    <div
+      class="img"
+      :style="{ background: `url(${product.image}) center / cover` }"
+    ></div>
     <div class="title">
       <h2>
         <div>
@@ -16,6 +17,7 @@
 <script>
 export default {
   props: {
+    active: Boolean,
     product: {
       type: Object,
       required: true
@@ -30,6 +32,36 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  mask-image: radial-gradient(circle, #000 0%, transparent 70%);
+  height: 100%;
+
+  .img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  //&[data-active] + .product {
+  //  z-index: 2;
+  //  clip-path: circle(0% at 50% 50%);
+  //}
+
+  &[data-active] {
+    z-index: 1;
+    //.img {
+    //  z-index: 1;
+    //  animation: show 1s ease-in-out forwards;
+    //
+    //  @keyframes show {
+    //    from {
+    //      clip-path: circle(0% at 50% 50%);
+    //    }
+    //    to {
+    //      clip-path: circle(100% at 50% 50%);
+    //    }
+    //  }
+    //}
+  }
 }
 </style>

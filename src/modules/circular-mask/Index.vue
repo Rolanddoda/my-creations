@@ -4,12 +4,20 @@
       v-for="(product, index) of products"
       :key="index"
       :product="product"
+      :active="index === 0"
+      @click.native="changeActiveProduct"
     />
   </main>
 </template>
 
 <script>
+import { gsap } from "gsap";
+// Components
 import Product from "./components/Product";
+
+const tl = gsap.timeline({ delay: 0.5 });
+let activeIndex = 0;
+let nextIndex = 1;
 
 export default {
   components: {
@@ -35,6 +43,30 @@ export default {
         titles: ["I HAVE", "THIS", "CHAIR"]
       }
     ];
+  },
+
+  methods: {
+    getNextIndex() {
+      return (activeIndex + 1) % this.products.length;
+    },
+
+    changeActiveProduct() {
+      const products = this.$el.querySelectorAll(".product");
+      const nextProduct = products[nextIndex];
+      const nextImg = nextProduct.querySelector(".img");
+      nextProduct.style.zIndex = 2;
+      nextImg.style.clipPath = "circle(0% at 50% 50%)";
+      tl.to(nextImg, {
+        clipPath: "circle(100% at 50% 50%)",
+        onComplete: () => {
+          products[activeIndex].querySelector(".img").style.clipPath =
+            "circle(0% at 50% 50%)";
+          nextProduct.style.zIndex = 1;
+          activeIndex = nextIndex;
+          nextIndex = this.getNextIndex();
+        }
+      });
+    }
   }
 };
 </script>
