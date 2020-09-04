@@ -1,5 +1,5 @@
 <template>
-  <div class="product fill-height" :data-active="active">
+  <div class="product fill-height">
     <div
       class="img"
       :style="{ background: `url(${product.image}) center / cover` }"
@@ -17,7 +17,6 @@
 <script>
 export default {
   props: {
-    active: Boolean,
     product: {
       type: Object,
       required: true
@@ -32,12 +31,9 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
 
   .img {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;

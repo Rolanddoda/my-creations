@@ -4,7 +4,6 @@
       v-for="(product, index) of products"
       :key="index"
       :product="product"
-      :active="index === 0"
       @click.native="changeActiveProduct"
     />
   </main>
