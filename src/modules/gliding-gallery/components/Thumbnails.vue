@@ -29,6 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 .thumbnails {
+  position: unset;
   width: 100%;
   background-color: #fff;
   display: grid;

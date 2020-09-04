@@ -121,4 +121,11 @@ export default {
 html {
   overflow-y: auto !important;
 }
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box !important;
+  position: relative;
+}
 </style>
