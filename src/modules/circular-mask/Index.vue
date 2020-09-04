@@ -18,6 +18,7 @@ import Product from "./components/Product";
 const tl = gsap.timeline({ delay: 0.5 });
 let activeIndex = -1;
 let nextIndex = 0;
+let animationInProgress = false;
 
 export default {
   components: {
@@ -55,6 +56,9 @@ export default {
     },
 
     changeActiveProduct() {
+      if (animationInProgress) return;
+      animationInProgress = true;
+
       const products = this.$el.querySelectorAll(".product");
       const nextProduct = products[nextIndex];
       const nextImg = nextProduct.querySelector(".img");
@@ -72,6 +76,7 @@ export default {
           nextImg.style.zIndex = 1;
           activeIndex = nextIndex;
           nextIndex = this.getNextIndex();
+          animationInProgress = false;
         }
       });
     }
