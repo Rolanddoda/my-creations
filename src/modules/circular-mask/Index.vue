@@ -55,19 +55,24 @@ export default {
       return (activeIndex + 1) % this.products.length;
     },
 
-    changeActiveProduct() {
+    changeActiveProduct(e) {
       if (animationInProgress) return;
       animationInProgress = true;
+
+      const mouseX = e ? e.clientX + "px" : "50%";
+      const mouseY = e ? e.clientY + "px" : "50%";
 
       const products = this.$el.querySelectorAll(".product");
       const nextProduct = products[nextIndex];
       const nextImg = nextProduct.querySelector(".img");
 
       nextImg.style.zIndex = 2;
-      nextImg.style.clipPath = "circle(0% at 50% 50%)";
+      nextImg.style.clipPath = `circle(0% at ${mouseX} ${mouseY})`;
 
       tl.to(nextImg, {
-        clipPath: "circle(100% at 50% 50%)",
+        clipPath: `circle(200% at ${mouseX} ${mouseY})`,
+        duration: 0.5,
+        ease: "power4.in",
         onComplete: () => {
           if (~activeIndex) {
             products[activeIndex].querySelector(".img").style.clipPath =
