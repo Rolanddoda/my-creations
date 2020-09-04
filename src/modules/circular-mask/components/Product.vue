@@ -40,28 +40,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-  }
-
-  //&[data-active] + .product {
-  //  z-index: 2;
-  //  clip-path: circle(0% at 50% 50%);
-  //}
-
-  &[data-active] {
-    z-index: 1;
-    //.img {
-    //  z-index: 1;
-    //  animation: show 1s ease-in-out forwards;
-    //
-    //  @keyframes show {
-    //    from {
-    //      clip-path: circle(0% at 50% 50%);
-    //    }
-    //    to {
-    //      clip-path: circle(100% at 50% 50%);
-    //    }
-    //  }
-    //}
+    z-index: -1;
   }
 }
 </style>
