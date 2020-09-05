@@ -29,15 +29,15 @@ export default {
       },
       {
         image: "https://source.unsplash.com/hpjSkU2UYSU/1920x1080",
-        titles: ["EHHH", "I", "LIKE IT"]
+        titles: ["THIS", "SEEMS EASY", "CHEESE"]
       },
       {
-        image: "https://source.unsplash.com/YlVjrBkfXt8/1920x1080",
-        titles: ["OHH", "WHAT IS", "THIS"]
+        image: "https://source.unsplash.com/BfrQnKBulYQ/1920x1080",
+        titles: ["LET'S", "DO SOME CODING", "NOW"]
       },
       {
         image: "https://source.unsplash.com/dYEuFB8KQJk/1920x1080",
-        titles: ["DO I", "LOOK LIKE", "THAT ?"]
+        titles: ["AFTER", "MANY HOURS OF", "TRYING"]
       }
     ];
     this.activeIndex = -1;
@@ -61,6 +61,10 @@ export default {
       return this.products[this.nextIndex].querySelector(".img");
     },
 
+    getCurrentImg() {
+      return this.products[this.activeIndex].querySelector(".img");
+    },
+
     changeActiveProduct(e) {
       if (this.animationInProgress) return;
       this.animationInProgress = true;
@@ -81,16 +85,17 @@ export default {
         clipPath: `circle(200% at ${mouseX} ${mouseY})`,
         duration: 0.5,
         ease: "power4.in",
-        onComplete: this.resetWhenAnimCompletes
+        onComplete: this.onAnimationComplete
       });
     },
 
-    resetWhenAnimCompletes() {
+    onAnimationComplete() {
       const nextImg = this.getNextImg();
       if (~this.activeIndex) {
-        this.products[this.activeIndex].querySelector(".img").style.clipPath =
-          "circle(0% at 50% 50%)";
+        this.getCurrentImg().style.clipPath = "circle(0% at 50% 50%)";
+        this.products[this.activeIndex].removeAttribute("data-active", "");
       }
+      this.products[this.nextIndex].setAttribute("data-active", "");
       nextImg.style.zIndex = 1;
       this.activeIndex = this.nextIndex;
       this.nextIndex = this.getNextIndex();

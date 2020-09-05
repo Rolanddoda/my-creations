@@ -4,18 +4,18 @@
       class="img"
       :style="{ background: `url(${product.image}) center / cover` }"
     ></div>
-    <div class="title">
-      <h2>
-        <div>
-          <span v-for="title of product.titles" :key="title">{{ title }}</span>
-        </div>
-      </h2>
-    </div>
+    <TitleWrapper :titles="product.titles" />
   </div>
 </template>
 
 <script>
+import TitleWrapper from "./TitleWrapper";
+
 export default {
+  components: {
+    TitleWrapper
+  },
+
   props: {
     product: {
       type: Object,
@@ -31,6 +31,16 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
+
+  &[data-active] {
+    .text-wrapper {
+      z-index: 1;
+
+      ::v-deep span {
+        transform: translateY(0);
+      }
+    }
+  }
 
   .img {
     position: absolute;
