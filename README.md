@@ -1,4 +1,4 @@
-# dashboard-of-projects
+# my-creations
 
 ## Project setup
 ```
