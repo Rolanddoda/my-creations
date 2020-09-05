@@ -117,10 +117,10 @@ export default {
   width: var(--size);
   height: var(--size);
   border-radius: 50%;
-  border: 2px solid;
   z-index: 3;
-  opacity: 0.5;
   transform: translate(var(--translateX), var(--translateY));
   pointer-events: none;
+  background: rgba(white, 0.5);
+  filter: brightness(0.7);
 }
 </style>
