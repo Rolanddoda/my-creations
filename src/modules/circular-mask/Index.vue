@@ -16,11 +16,6 @@ import { gsap } from "gsap";
 // Components
 import Product from "./components/Product";
 
-const tl = gsap.timeline({ delay: 0.5 });
-let activeIndex = -1;
-let nextIndex = 0;
-let animationInProgress = false;
-
 export default {
   components: {
     Product
@@ -45,6 +40,10 @@ export default {
         titles: ["DO I", "LOOK LIKE", "THAT ?"]
       }
     ];
+    this.activeIndex = -1;
+    this.nextIndex = 0;
+    this.animationInProgress = false;
+    this.tl = gsap.timeline({ delay: 0.5 });
   },
 
   mounted() {
@@ -54,36 +53,36 @@ export default {
 
   methods: {
     getNextIndex() {
-      return (activeIndex + 1) % this.products.length;
+      return (this.activeIndex + 1) % this.products.length;
     },
 
     changeActiveProduct(e) {
-      if (animationInProgress) return;
-      animationInProgress = true;
+      if (this.animationInProgress) return;
+      this.animationInProgress = true;
 
       const mouseX = e ? e.clientX + "px" : "50%";
       const mouseY = e ? e.clientY + "px" : "50%";
 
       const products = this.$el.querySelectorAll(".product");
-      const nextProduct = products[nextIndex];
+      const nextProduct = products[this.nextIndex];
       const nextImg = nextProduct.querySelector(".img");
 
       nextImg.style.zIndex = 2;
       nextImg.style.clipPath = `circle(0% at ${mouseX} ${mouseY})`;
 
-      tl.to(nextImg, {
+      this.tl.to(nextImg, {
         clipPath: `circle(200% at ${mouseX} ${mouseY})`,
         duration: 0.5,
         ease: "power4.in",
         onComplete: () => {
-          if (~activeIndex) {
-            products[activeIndex].querySelector(".img").style.clipPath =
+          if (~this.activeIndex) {
+            products[this.activeIndex].querySelector(".img").style.clipPath =
               "circle(0% at 50% 50%)";
           }
           nextImg.style.zIndex = 1;
-          activeIndex = nextIndex;
-          nextIndex = this.getNextIndex();
-          animationInProgress = false;
+          this.activeIndex = this.nextIndex;
+          this.nextIndex = this.getNextIndex();
+          this.animationInProgress = false;
         }
       });
     },
