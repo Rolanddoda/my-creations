@@ -47,6 +47,7 @@ export default {
   },
 
   mounted() {
+    this.products = this.$el.querySelectorAll(".product");
     this.changeActiveProduct();
     this.$el.addEventListener("mousemove", this.setMouseMovePosition);
   },
@@ -56,35 +57,44 @@ export default {
       return (this.activeIndex + 1) % this.products.length;
     },
 
+    getNextImg() {
+      return this.products[this.nextIndex].querySelector(".img");
+    },
+
     changeActiveProduct(e) {
       if (this.animationInProgress) return;
       this.animationInProgress = true;
 
       const mouseX = e ? e.clientX + "px" : "50%";
       const mouseY = e ? e.clientY + "px" : "50%";
-
-      const products = this.$el.querySelectorAll(".product");
-      const nextProduct = products[this.nextIndex];
-      const nextImg = nextProduct.querySelector(".img");
+      const nextImg = this.getNextImg();
 
       nextImg.style.zIndex = 2;
       nextImg.style.clipPath = `circle(0% at ${mouseX} ${mouseY})`;
+      this.animateNextImg(mouseX, mouseY);
+    },
+
+    animateNextImg(mouseX, mouseY) {
+      const nextImg = this.getNextImg();
 
       this.tl.to(nextImg, {
         clipPath: `circle(200% at ${mouseX} ${mouseY})`,
         duration: 0.5,
         ease: "power4.in",
-        onComplete: () => {
-          if (~this.activeIndex) {
-            products[this.activeIndex].querySelector(".img").style.clipPath =
-              "circle(0% at 50% 50%)";
-          }
-          nextImg.style.zIndex = 1;
-          this.activeIndex = this.nextIndex;
-          this.nextIndex = this.getNextIndex();
-          this.animationInProgress = false;
-        }
+        onComplete: this.resetWhenAnimCompletes
       });
+    },
+
+    resetWhenAnimCompletes() {
+      const nextImg = this.getNextImg();
+      if (~this.activeIndex) {
+        this.products[this.activeIndex].querySelector(".img").style.clipPath =
+          "circle(0% at 50% 50%)";
+      }
+      nextImg.style.zIndex = 1;
+      this.activeIndex = this.nextIndex;
+      this.nextIndex = this.getNextIndex();
+      this.animationInProgress = false;
     },
 
     setMouseMovePosition(e) {
