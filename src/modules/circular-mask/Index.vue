@@ -29,20 +29,20 @@ export default {
   created() {
     this.products = [
       {
-        image: "https://source.unsplash.com/RECZjSWMPVI/1200x900",
-        titles: ["BEEF", "WELLINGTON", "CHAIR"]
+        image: "https://source.unsplash.com/m_HRfLhgABo/1920x1080",
+        titles: ["LET'S", "GET", "STARTED"]
       },
       {
-        image: "https://source.unsplash.com/3IX-Tz_0ZN0/1200x900",
-        titles: ["SO MANY", "CHAIR", "TABLES"]
+        image: "https://source.unsplash.com/hpjSkU2UYSU/1920x1080",
+        titles: ["EHHH", "I", "LIKE IT"]
       },
       {
-        image: "https://source.unsplash.com/hTPUYIIvZBY/1200x900",
-        titles: ["CLOSE-UP", "OF A", "CHAIR"]
+        image: "https://source.unsplash.com/YlVjrBkfXt8/1920x1080",
+        titles: ["OHH", "WHAT IS", "THIS"]
       },
       {
-        image: "https://source.unsplash.com/m1JPKkCHhkc/1200x900",
-        titles: ["I HAVE", "THIS", "CHAIR"]
+        image: "https://source.unsplash.com/dYEuFB8KQJk/1920x1080",
+        titles: ["DO I", "LOOK LIKE", "THAT ?"]
       }
     ];
   },
