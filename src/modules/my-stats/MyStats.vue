@@ -1,0 +1,991 @@
+<template>
+  <div class="my-stats">
+    <main>
+      <div class="slider">
+        <div class="slider__image--wrapper">
+          <img
+            class="slider__image slider__image--1"
+            src="https://raw.githubusercontent.com/devloop01/webgl-slider/main/src/img/retro.jpg"
+            alt="image 01"
+          />
+        </div>
+      </div>
+    </main>
+
+    <svg
+      class="cursor cursor--large"
+      width="60"
+      height="60"
+      viewBox="0 0 60 60"
+    >
+      <circle class="cursor__inner" cx="30" cy="30" r="20" />
+    </svg>
+    <svg
+      class="cursor cursor--small"
+      width="60"
+      height="60"
+      viewBox="0 0 60 60"
+    >
+      <circle class="cursor__inner" cx="30" cy="30" r="5" />
+    </svg>
+    <svg
+      class="cursor cursor--close"
+      width="40"
+      height="40"
+      viewBox="0 0 512 512"
+    >
+      <line x1="368" y1="368" x2="144" y2="144" />
+      <line x1="368" y1="144" x2="144" y2="368" />
+    </svg>
+
+    <!-- //////// SHADER CODE //////// -->
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+      precision mediump float;
+
+      varying vec2 vUv;
+      varying float vWave;
+
+      uniform float uTime;
+      uniform float uAmplitude;
+      uniform float uProgDirection;
+      uniform float uMouseOverAmp;
+      uniform float uRadius;
+
+      uniform vec2 uMeshSize;
+      uniform vec2 uMousePos;
+
+      uniform bool uAnimating;
+      uniform bool uTranslating;
+
+      float mapVal(in float n,in float start1,in float stop1,in float start2,in float stop2){
+        return((n-start1)/(stop1-start1))*(stop2-start2)+start2;
+      }
+
+      void main(){
+        vec3 pos=position;
+        vUv=uv;
+
+        vec2 center=vUv-uMousePos;
+        center.x*=uMeshSize.x/uMeshSize.y;
+        float dist=length(center);
+
+        float radius=uRadius;
+
+        float mask=smoothstep(radius,radius*5.,dist);
+        float d=mapVal(mask,-1.,1.,-1.,0.);
+
+        if(uAnimating){
+          pos.z=sin(pos.x*5.+uTime*10.*uProgDirection)*uAmplitude;
+          pos.z*=2.5;
+        }else{
+          pos.z=d*uMouseOverAmp;
+          pos.z*=15.;
+        }
+
+        if(uTranslating){
+          pos.z=sin(pos.y*6.+uTime*10.)*uAmplitude;
+          pos.z*=3.5;
+        }
+
+        vWave=pos.z;
+
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(pos,1.);
+      }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying vec2 vUv;
+      varying float vWave;
+
+      uniform float uTime;
+      uniform float uProg;
+      uniform float uProgDirection;
+
+      uniform sampler2D uCurrTex;
+      uniform sampler2D uNextTex;
+
+      uniform vec2 uMeshSize;
+      uniform vec2 uImageSize;
+
+      vec2 backgroundCoverUv(vec2 uv,vec2 canvasSize,vec2 textureSize){
+        vec2 ratio=vec2(
+        min((canvasSize.x/canvasSize.y)/(textureSize.x/textureSize.y),1.),
+        min((canvasSize.y/canvasSize.x)/(textureSize.y/textureSize.x),1.)
+        );
+
+        vec2 uvWithRatio=uv*ratio;
+
+        return vec2(
+        uvWithRatio.x+(1.-ratio.x)*.5,
+        uvWithRatio.y+(1.-ratio.y)*.5
+        );
+      }
+
+      void main(){
+        vec2 texUv=backgroundCoverUv(vUv,uMeshSize,uImageSize);
+
+        float x=uProg;
+        float y;
+        if(uProgDirection==1.)y=(x*2.+(vUv.x-1.));
+        else y=((x*2.)-vUv.x);
+        x=smoothstep(0.,1.,y);
+
+        float w=vWave;
+
+        float r1=texture2D(uCurrTex,texUv+w*.04).r;
+        float g1=texture2D(uCurrTex,texUv+w*.01).g;
+        float b1=texture2D(uCurrTex,texUv+w*-.03).b;
+        vec3 tex1=vec3(r1,g1,b1);
+
+        float r2=texture2D(uNextTex,texUv+w*.04).r;
+        float g2=texture2D(uNextTex,texUv+w*.01).g;
+        float b2=texture2D(uNextTex,texUv+w*-.03).b;
+        vec3 tex2=vec3(r2,g2,b2);
+
+        float scaleUp=(.4+.6*(1.-uProg));
+        float scaleDown=(.6+.4*uProg);
+
+        vec4 f1=mix(
+        texture2D(uCurrTex,texUv*(1.-x)*scaleUp+vec2(.15)*uProg),
+        texture2D(uNextTex,texUv*x*scaleDown),
+        x);
+
+        vec3 f2=mix(tex1,tex2,x);
+
+        vec4 final=mix(f1,vec4(f2,1.),.12);
+
+        gl_FragColor=final;
+      }
+    </script>
+  </div>
+</template>
+
+<script>
+import * as THREE from "three";
+import gsap from "gsap";
+
+export default {
+  mounted() {
+    let nMouse = new THREE.Vector2();
+    window.addEventListener("mousemove", event => {
+      event.preventDefault();
+      nMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      nMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    let mouseOver = false,
+      mouseDown = false;
+
+    const vertexShader = document.getElementById("vertexShader").innerHTML;
+    const fragmentShader = document.getElementById("fragmentShader").innerHTML;
+
+    const planeGeometry = new THREE.PlaneBufferGeometry(1, 1, 32, 32);
+    const planeMaterial = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader
+    });
+
+    // -------- UTILITY FUNCTIONS & CLASSES [START] --------
+
+    const lerp = (a, b, n) => (1 - n) * a + n * b;
+
+    const getMousePos = e => {
+      let posx = 0;
+      let posy = 0;
+      if (!e) e = window.event;
+      if (e.pageX || e.pageY) {
+        posx = e.pageX;
+        posy = e.pageY;
+      } else if (e.clientX || e.clientY) {
+        posx =
+          e.clientX + window.scrollLeft + document.documentElement.scrollLeft;
+        posy =
+          e.clientY + window.scrollTop + document.documentElement.scrollTop;
+      }
+
+      return { x: posx, y: posy };
+    };
+
+    // function preloadImages(selector) {
+    //   return new Promise((resolve, reject) => {
+    //     imagesLoaded(selector, { background: true }, resolve);
+    //   });
+    // }
+
+    class Mouse {
+      constructor() {
+        this.position = {
+          x: 0,
+          y: 0
+        };
+        this.isMoving = false;
+
+        this.mouseEvent = {
+          previous: null,
+          current: null
+        };
+
+        this.initEvents();
+        this.updateMovingState();
+      }
+      initEvents() {
+        window.addEventListener("mousemove", ev => {
+          this.mouseEvent.current = ev;
+          this.position = getMousePos(ev);
+        });
+      }
+      updateMovingState() {
+        setInterval(() => {
+          if (this.mouseEvent.previous && this.mouseEvent.current) {
+            const moveX = Math.abs(
+              this.mouseEvent.current.screenX - this.mouseEvent.previous.screenX
+            );
+            const moveY = Math.abs(
+              this.mouseEvent.current.screenY - this.mouseEvent.previous.screenY
+            );
+            const movement = Math.sqrt(moveX * moveX + moveY * moveY);
+
+            if (movement == 0) this.isMoving = false;
+            else this.isMoving = true;
+          }
+
+          this.mouseEvent.previous = this.mouseEvent.current;
+        }, 100);
+      }
+    }
+
+    // -------- UTILITY FUNCTIONS & CLASSES [END] --------
+
+    // -------- GL CLASSES [START] --------
+
+    class GL {
+      constructor() {
+        this.scene = new THREE.Scene();
+
+        this.camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          100
+        );
+        this.camera.position.z = 50;
+
+        this.renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          antialias: true
+        });
+        this.renderer.setPixelRatio(
+          gsap.utils.clamp(1.5, 1, window.devicePixelRatio)
+        );
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setClearColor(0xf2f2f2, 0);
+
+        this.clock = new THREE.Clock();
+
+        this.init();
+      }
+
+      init() {
+        this.addToDom();
+        this.addEvents();
+        this.run();
+      }
+
+      addToDom() {
+        const canvas = this.renderer.domElement;
+        canvas.classList.add("dom-gl");
+        document.querySelector(".my-stats").appendChild(canvas);
+      }
+
+      addEvents() {
+        window.addEventListener("resize", this.resize.bind(this));
+        requestAnimationFrame(() => this.run());
+      }
+
+      resize() {
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.camera.updateProjectionMatrix();
+
+        for (let i = 0; i < this.scene.children.length; i++) {
+          const plane = this.scene.children[i];
+          if (plane.resize) plane.resize();
+        }
+      }
+
+      run() {
+        let elapsed = this.clock.getElapsedTime();
+
+        for (let i = 0; i < this.scene.children.length; i++) {
+          const plane = this.scene.children[i];
+          if (plane.updateTime) plane.updateTime(elapsed);
+        }
+
+        this.render();
+      }
+
+      render() {
+        this.renderer.render(this.scene, this.camera);
+        requestAnimationFrame(() => this.run());
+      }
+    }
+
+    const Gl = new GL();
+
+    class GlObject extends THREE.Object3D {
+      init(el) {
+        this.el = el;
+        this.resize();
+      }
+
+      resize() {
+        this.setBounds();
+      }
+
+      setBounds() {
+        this.rect = this.el.getBoundingClientRect();
+
+        this.bounds = {
+          left: this.rect.left,
+          top: this.rect.top + window.scrollY,
+          width: this.rect.width,
+          height: this.rect.height
+        };
+
+        this.updateSize();
+        this.updatePosition();
+      }
+
+      updateSize() {
+        this.camUnit = this.calculateUnitSize(
+          Gl.camera.position.z - this.position.z
+        );
+
+        const x = this.bounds.width / window.innerWidth;
+        const y = this.bounds.height / window.innerHeight;
+
+        if (!x || !y) return;
+
+        this.scale.x = this.camUnit.width * x;
+        this.scale.y = this.camUnit.height * y;
+      }
+
+      calculateUnitSize(distance = this.position.z) {
+        const vFov = (Gl.camera.fov * Math.PI) / 180;
+        const height = 2 * Math.tan(vFov / 2) * distance;
+        const width = height * Gl.camera.aspect;
+
+        return { width, height };
+      }
+
+      updateY(y = 0) {
+        const { top, height } = this.bounds;
+
+        this.position.y = this.camUnit.height / 2 - this.scale.y / 2;
+        this.position.y -=
+          ((top - y) / window.innerHeight) * this.camUnit.height;
+
+        this.progress = gsap.utils.clamp(
+          0,
+          1,
+          1 - (-y + top + height) / (window.innerHeight + height)
+        );
+      }
+
+      updateX(x = 0) {
+        const { left } = this.bounds;
+
+        this.position.x = -(this.camUnit.width / 2) + this.scale.x / 2;
+        this.position.x +=
+          ((left + x) / window.innerWidth) * this.camUnit.width;
+      }
+
+      updatePosition(y) {
+        this.updateY(y);
+        this.updateX(0);
+      }
+    }
+
+    class GlSlider extends GlObject {
+      init(el) {
+        super.init(el);
+
+        this.geometry = planeGeometry;
+        this.material = planeMaterial.clone();
+
+        this.material.uniforms = {
+          uCurrTex: { value: 0 },
+          uNextTex: { value: 0 },
+          uTime: { value: 0 },
+          uProg: { value: 0 },
+          uAmplitude: { value: 0 },
+          uProgDirection: { value: 0 },
+          uMeshSize: { value: [this.rect.width, this.rect.height] },
+          uImageSize: { value: [0, 0] },
+          uMousePos: { value: [0, 0] },
+          uMouseOverAmp: { value: 0 },
+          uAnimating: { value: false },
+          uRadius: { value: 0.08 },
+          uTranslating: { value: true }
+        };
+
+        this.imageScale = 1;
+
+        this.textures = [];
+
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        this.mouseLerpAmount = 0.1;
+
+        this.state = {
+          animating: false,
+          current: 0
+        };
+
+        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.add(this.mesh);
+
+        Gl.scene.add(this);
+
+        this.loadTextures();
+        this.addEvents();
+      }
+
+      loadTextures() {
+        const manager = new THREE.LoadingManager(() => {
+          this.material.uniforms.uCurrTex.value = this.textures[0];
+        });
+        const loader = new THREE.TextureLoader(manager);
+        const imgs = [...this.el.querySelectorAll("img")];
+
+        imgs.forEach(img => {
+          loader.load(img.src, texture => {
+            texture.minFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+
+            this.material.uniforms.uImageSize.value = [
+              img.naturalWidth,
+              img.naturalHeight
+            ];
+            this.textures.push(texture);
+          });
+        });
+      }
+
+      switchTextures(index, direction) {
+        if (this.state.animating) return;
+
+        gsap
+          .timeline({
+            onStart: () => {
+              this.state.animating = true;
+              this.material.uniforms.uAnimating.value = true;
+              this.material.uniforms.uProgDirection.value = direction;
+              this.material.uniforms.uNextTex.value = this.textures[index];
+            },
+            onComplete: () => {
+              this.state.animating = false;
+              this.material.uniforms.uAnimating.value = false;
+              this.material.uniforms.uCurrTex.value = this.textures[index];
+              this.currentAmp = 0;
+            }
+          })
+          .fromTo(
+            this.material.uniforms.uProg,
+            {
+              value: 0
+            },
+            {
+              value: 1,
+              duration: 1,
+              ease: "ease.out"
+            },
+            0
+          )
+          .fromTo(
+            this.material.uniforms.uAmplitude,
+            {
+              value: 0
+            },
+            {
+              duration: 0.8,
+              value: 1,
+              repeat: 1,
+              yoyo: true,
+              yoyoEase: "sine.out",
+              ease: "expo.out"
+            },
+            0
+          );
+      }
+
+      updateTime(time) {
+        this.material.uniforms.uTime.value = time;
+        this.run();
+      }
+
+      addEvents() {
+        this.el.addEventListener("mouseenter", () => (mouseOver = true));
+        this.el.addEventListener("mouseleave", () => (mouseOver = false));
+        this.el.addEventListener("mousedown", () => (mouseDown = true));
+        this.el.addEventListener("mouseup", () => (mouseDown = false));
+      }
+
+      scaleImage(direction) {
+        const imageTl = gsap.timeline({
+          defaults: {
+            duration: 1.2,
+            ease: "elastic.out(1, 1)",
+            onUpdate: () => {
+              this.resize();
+            }
+          }
+        });
+        if (direction == "up") {
+          imageTl.to(this.el, {
+            scale: window.innerHeight / 600
+          });
+        } else if (direction == "down") {
+          imageTl.to(this.el, {
+            scale: 1
+          });
+        }
+      }
+
+      run() {
+        let m = mouseOver ? nMouse : new THREE.Vector2(0, 0);
+        this.mouse.lerp(m, this.mouseLerpAmount);
+
+        this.raycaster.setFromCamera(this.mouse, Gl.camera);
+        let intersects = this.raycaster.intersectObject(this.mesh);
+        if (intersects.length > 0) {
+          this.material.uniforms.uMousePos.value = [
+            intersects[0].uv.x,
+            intersects[0].uv.y
+          ];
+        }
+
+        if (mouseOver) {
+          this.material.uniforms.uMouseOverAmp.value = THREE.MathUtils.lerp(
+            this.material.uniforms.uMouseOverAmp.value,
+            1,
+            0.08
+          );
+          this.mouseLerpAmount = THREE.MathUtils.lerp(
+            this.mouseLerpAmount,
+            0.1,
+            0.5
+          );
+        } else {
+          this.material.uniforms.uMouseOverAmp.value = THREE.MathUtils.lerp(
+            this.material.uniforms.uMouseOverAmp.value,
+            0,
+            0.08
+          );
+          this.mouseLerpAmount = THREE.MathUtils.lerp(
+            this.mouseLerpAmount,
+            0,
+            0.5
+          );
+        }
+
+        if (mouseOver && mouseDown) {
+          this.material.uniforms.uRadius.value = THREE.MathUtils.lerp(
+            this.material.uniforms.uRadius.value,
+            1,
+            0.01
+          );
+        } else if (mouseOver && !mouseDown) {
+          this.material.uniforms.uRadius.value = THREE.MathUtils.lerp(
+            this.material.uniforms.uRadius.value,
+            0.08,
+            0.08
+          );
+        }
+
+        if (this.state.animating) {
+          this.material.uniforms.uMouseOverAmp.value = THREE.MathUtils.lerp(
+            this.material.uniforms.uMouseOverAmp.value,
+            0,
+            0.1
+          );
+        }
+      }
+    }
+
+    // -------- GL CLASSES [END] --------
+
+    // -------- MAIN CLASSES [START] --------
+
+    let mouse = new Mouse();
+
+    class Cursor {
+      constructor(el) {
+        this.DOM = { el: el };
+        this.DOM.el.style.opacity = 0;
+
+        this.bounds = this.DOM.el.getBoundingClientRect();
+
+        this.renderedStyles = {
+          tx: { previous: 0, current: 0, amt: 0.2 },
+          ty: { previous: 0, current: 0, amt: 0.2 },
+          scale: { previous: 0, current: 1, amt: 0.2 },
+          opacity: { previous: 0, current: 1, amt: 0.15 }
+        };
+      }
+
+      init() {
+        this.onMouseMoveEv = () => {
+          this.renderedStyles.tx.previous = this.renderedStyles.tx.current =
+            mouse.position.x - this.bounds.width / 2;
+          this.renderedStyles.ty.previous = this.renderedStyles.ty.previous =
+            mouse.position.y - this.bounds.height / 2;
+          requestAnimationFrame(() => this.render());
+          window.removeEventListener("mousemove", this.onMouseMoveEv);
+        };
+        window.addEventListener("mousemove", this.onMouseMoveEv);
+      }
+
+      setTranslateLerpAmount(amount) {
+        this.renderedStyles["tx"].amt = amount;
+        this.renderedStyles["ty"].amt = amount;
+        return this;
+      }
+      scale(amount = 1) {
+        this.renderedStyles["scale"].current = amount;
+        return this;
+      }
+      opaque(amount = 1) {
+        this.renderedStyles["opacity"].current = amount;
+        return this;
+      }
+      render() {
+        this.renderedStyles["tx"].current =
+          mouse.position.x - this.bounds.width / 2;
+        this.renderedStyles["ty"].current =
+          mouse.position.y - this.bounds.height / 2;
+
+        for (const key in this.renderedStyles) {
+          this.renderedStyles[key].previous = lerp(
+            this.renderedStyles[key].previous,
+            this.renderedStyles[key].current,
+            this.renderedStyles[key].amt
+          );
+        }
+
+        gsap.set(this.DOM.el, {
+          translateX: this.renderedStyles["tx"].previous,
+          translateY: this.renderedStyles["ty"].previous,
+          scale: this.renderedStyles["scale"].previous,
+          opacity: this.renderedStyles["opacity"].previous
+        });
+
+        requestAnimationFrame(() => this.render());
+      }
+    }
+
+    class Cursors {
+      constructor() {
+        this.DOM = {};
+
+        this.DOM.cursorEls = {
+          large: document.querySelector(".cursor--large"),
+          small: document.querySelector(".cursor--small"),
+          close: document.querySelector(".cursor--close")
+        };
+
+        this.cursors = {
+          large: new Cursor(this.DOM.cursorEls.large),
+          small: new Cursor(this.DOM.cursorEls.small),
+          close: new Cursor(this.DOM.cursorEls.close)
+        };
+
+        this.cursors.small.setTranslateLerpAmount(0.85);
+        this.cursors.close
+          .opaque(0)
+          .scale(0.5)
+          .setTranslateLerpAmount(0.5);
+      }
+
+      init() {
+        Object.values(this.cursors).forEach(cursor => {
+          cursor.init();
+        });
+        this.initEvents();
+      }
+
+      initEvents() {
+        this.initEventsOnImage();
+      }
+
+      initEventsOnImage() {
+        const imageWrapper = document.querySelector(".slider__image--wrapper");
+
+        const onMouseDown = () => {
+          this.cursors.large.scale(2).opaque(0);
+          this.cursors.small.scale(5);
+        };
+
+        const onMouseUp = () => {
+          this.cursors.large.scale(1).opaque(1);
+          this.cursors.small.scale(1);
+        };
+
+        imageWrapper.addEventListener("mousedown", onMouseDown);
+        imageWrapper.addEventListener("mouseup", onMouseUp);
+      }
+
+      initEventsOnSlider(slider) {
+        const imageWrapper = document.querySelector(".slider__image--wrapper");
+
+        const onMouseEnter = () => {
+          this.cursors.large.scale(2).opaque(0);
+          this.cursors.small.scale(5).setTranslateLerpAmount(0.25);
+          this.cursors.close.opaque(1).scale(1);
+        };
+
+        const onMouseLeave = () => {
+          this.cursors.large.scale(1).opaque(1);
+          this.cursors.small.scale(1).setTranslateLerpAmount(0.85);
+          this.cursors.close.opaque(0).scale(0.5);
+        };
+
+        slider.onFullscreen(() => {
+          onMouseEnter();
+          imageWrapper.addEventListener("mouseenter", onMouseEnter);
+          imageWrapper.addEventListener("mouseleave", onMouseLeave);
+        });
+
+        slider.offFullscreen(() => {
+          onMouseLeave();
+          imageWrapper.removeEventListener("mouseenter", onMouseEnter);
+          imageWrapper.removeEventListener("mouseleave", onMouseLeave);
+        });
+      }
+    }
+
+    let clicked = false;
+
+    class Slideshow {
+      constructor(el) {
+        this.DOM = { el };
+        this.DOM.imageWrapperEl = this.DOM.el.querySelector(
+          ".slider__image--wrapper"
+        );
+
+        this.current = 0;
+        this.GlSlider = new GlSlider();
+        this.GlSlider.init(document.querySelector(".slider__image--wrapper"));
+        this.initEvents();
+      }
+
+      initAnimation() {
+        const tl = gsap
+          .timeline({
+            defaults: { duration: 1, ease: "power4.inOut" },
+            delay: 0.25
+          })
+          .addLabel("start", 0)
+          .addLabel("upcoming", 1.25);
+        tl.to(
+          this.DOM.imageWrapperEl,
+          {
+            duration: 1.25,
+            translateY: 0,
+            ease: "sine.out",
+            onUpdate: () => {
+              this.GlSlider.setBounds();
+            }
+          },
+          "start"
+        ).to(
+          this.GlSlider.material.uniforms.uAmplitude,
+          {
+            duration: 1,
+            value: 1,
+            repeat: 1,
+            yoyo: true,
+            yoyoEase: "sine.out",
+            ease: "expo.out",
+            onComplete: () => {
+              this.GlSlider.material.uniforms.uTranslating = false;
+            }
+          },
+          "start"
+        );
+      }
+
+      initEvents() {
+        this.onImageClickEv = () => {
+          if (this.isAnimating) return;
+
+          clicked = !clicked;
+
+          const tl = gsap
+            .timeline({
+              defaults: { duration: 1, ease: "power4.inOut" },
+              onStart: () => {
+                this.isAnimating = true;
+                if (clicked) {
+                  this.GlSlider.scaleImage("up");
+                  if (this.onFullscreenCallbackFn)
+                    this.onFullscreenCallbackFn();
+                } else {
+                  this.GlSlider.scaleImage("down");
+                  if (this.offFullscreenCallbackFn)
+                    this.offFullscreenCallbackFn();
+                }
+              },
+              onComplete: () => {
+                this.isAnimating = false;
+              }
+            })
+            .addLabel("start", clicked ? 0 : 0.2);
+        };
+        this.DOM.imageWrapperEl.addEventListener("click", () =>
+          this.onImageClickEv()
+        );
+      }
+
+      onFullscreen(callback) {
+        if (typeof callback == "function") {
+          this.onFullscreenCallbackFn = callback;
+        }
+      }
+
+      offFullscreen(callback) {
+        if (typeof callback == "function") {
+          this.offFullscreenCallbackFn = callback;
+        }
+      }
+    }
+
+    // -------- MAIN CLASSES [END] --------
+
+    // -------- MAIN CODE [START] --------
+
+    const cursors = new Cursors();
+
+    const slider = new Slideshow(document.querySelector(".slider"));
+    slider.initAnimation();
+    cursors.init();
+    cursors.initEventsOnSlider(slider);
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=Red+Rose:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
+
+.my-stats {
+  --cursor-stroke: #5631e9;
+  --cursor-fill: transparent;
+  --cursor-stroke-width: 1px;
+
+  --base-image-width: 450px;
+  --base-image-height: 600px;
+
+  --image-width: 450px;
+  --image-height: 600px;
+
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #1f1322;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  main {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider__image--wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--image-width);
+    height: var(--image-height);
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    z-index: 1;
+    user-select: none;
+
+    .slider__image {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      height: 100%;
+      display: none;
+    }
+  }
+
+  ::v-deep.dom-gl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (any-pointer: fine) {
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    z-index: 100;
+
+    &--large .cursor__inner {
+      fill: var(--cursor-fill);
+      stroke: var(--cursor-stroke);
+      stroke-width: var(--cursor-stroke-width);
+      opacity: 0.7;
+    }
+    &--small .cursor__inner {
+      fill: var(--cursor-stroke);
+      stroke: var(--cursor-fill);
+      opacity: 0.7;
+    }
+
+    &--close {
+      fill: none;
+      stroke: var(--cursor-stroke);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 32px;
+      mix-blend-mode: difference;
+    }
+  }
+}
+
+@media only screen and (max-width: 53em) {
+  .my-stats {
+    --image-width: calc(var(--base-image-width) / 1.125);
+    --image-height: calc(var(--base-image-height) / 1.125);
+  }
+}
+
+@media only screen and (max-width: 32em) {
+  .my-stats {
+    --image-width: calc(var(--base-image-width) / 1.5);
+    --image-height: calc(var(--base-image-height) / 1.5);
+  }
+}
+</style>
+
+<style></style>
