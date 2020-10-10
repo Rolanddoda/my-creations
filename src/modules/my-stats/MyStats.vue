@@ -166,8 +166,8 @@
 <script>
 import * as THREE from "three";
 import gsap from "gsap";
-import { Mouse } from "./classes/Mouse";
-import { GL } from "./classes/GL";
+import { Mouse } from "./webGl/Mouse";
+import { initWebGl } from "./webGl/webGl";
 
 export default {
   mounted() {
@@ -198,7 +198,7 @@ export default {
 
     // -------- GL CLASSES [START] --------
 
-    const Gl = new GL();
+    const { scene, camera } = initWebGl();
 
     class GlObject extends THREE.Object3D {
       init(el) {
@@ -226,7 +226,7 @@ export default {
 
       updateSize() {
         this.camUnit = this.calculateUnitSize(
-          Gl.camera.position.z - this.position.z
+          camera.position.z - this.position.z
         );
 
         const x = this.bounds.width / window.innerWidth;
@@ -239,9 +239,9 @@ export default {
       }
 
       calculateUnitSize(distance = this.position.z) {
-        const vFov = (Gl.camera.fov * Math.PI) / 180;
+        const vFov = (camera.fov * Math.PI) / 180;
         const height = 2 * Math.tan(vFov / 2) * distance;
-        const width = height * Gl.camera.aspect;
+        const width = height * camera.aspect;
 
         return { width, height };
       }
@@ -276,7 +276,7 @@ export default {
 
     class GlSlider extends GlObject {
       init(el) {
-        super.init(el, Gl);
+        super.init(el);
 
         this.geometry = planeGeometry;
         this.material = planeMaterial.clone();
@@ -313,7 +313,7 @@ export default {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.add(this.mesh);
 
-        Gl.scene.add(this);
+        scene.add(this);
 
         this.loadTextures();
         this.addEvents();
@@ -424,7 +424,7 @@ export default {
         let m = mouseOver ? nMouse : new THREE.Vector2(0, 0);
         this.mouse.lerp(m, this.mouseLerpAmount);
 
-        this.raycaster.setFromCamera(this.mouse, Gl.camera);
+        this.raycaster.setFromCamera(this.mouse, camera);
         let intersects = this.raycaster.intersectObject(this.mesh);
         if (intersects.length > 0) {
           this.material.uniforms.uMousePos.value = [
@@ -689,7 +689,7 @@ export default {
 
           clicked = !clicked;
 
-          const tl = gsap
+          gsap
             .timeline({
               defaults: { duration: 1, ease: "power4.inOut" },
               onStart: () => {
