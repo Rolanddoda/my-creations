@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import * as gsap from "gsap";
+import gsap from "gsap";
 
 export class GL {
   constructor() {
@@ -36,8 +36,11 @@ export class GL {
 
   addToDom() {
     const canvas = this.renderer.domElement;
-    canvas.classList.add("dom-gl");
-    document.body.appendChild(canvas);
+    canvas.classList.add("dom-classes");
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    document.querySelector(".my-stats").appendChild(canvas);
   }
 
   addEvents() {

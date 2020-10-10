@@ -5,7 +5,7 @@
         <div class="slider__image--wrapper">
           <img
             class="slider__image slider__image--1"
-            src="https://raw.githubusercontent.com/devloop01/webgl-slider/main/src/img/retro.jpg"
+            src="https://scontent.ftia5-1.fna.fbcdn.net/v/t1.0-9/s960x960/61880444_2641088789252229_4457837949127491584_o.jpg?_nc_cat=104&_nc_sid=110474&_nc_ohc=5AneHXZ7pokAX-5UkNc&_nc_ht=scontent.ftia5-1.fna&tp=7&oh=f3eaee6ee589e8439731be2e96f201af&oe=5FA7A577"
             alt="image 01"
           />
         </div>
@@ -166,6 +166,8 @@
 <script>
 import * as THREE from "three";
 import gsap from "gsap";
+import { Mouse } from "./classes/Mouse";
+import { GL } from "./classes/GL";
 
 export default {
   mounted() {
@@ -192,145 +194,9 @@ export default {
 
     const lerp = (a, b, n) => (1 - n) * a + n * b;
 
-    const getMousePos = e => {
-      let posx = 0;
-      let posy = 0;
-      if (!e) e = window.event;
-      if (e.pageX || e.pageY) {
-        posx = e.pageX;
-        posy = e.pageY;
-      } else if (e.clientX || e.clientY) {
-        posx =
-          e.clientX + window.scrollLeft + document.documentElement.scrollLeft;
-        posy =
-          e.clientY + window.scrollTop + document.documentElement.scrollTop;
-      }
-
-      return { x: posx, y: posy };
-    };
-
-    // function preloadImages(selector) {
-    //   return new Promise((resolve, reject) => {
-    //     imagesLoaded(selector, { background: true }, resolve);
-    //   });
-    // }
-
-    class Mouse {
-      constructor() {
-        this.position = {
-          x: 0,
-          y: 0
-        };
-        this.isMoving = false;
-
-        this.mouseEvent = {
-          previous: null,
-          current: null
-        };
-
-        this.initEvents();
-        this.updateMovingState();
-      }
-      initEvents() {
-        window.addEventListener("mousemove", ev => {
-          this.mouseEvent.current = ev;
-          this.position = getMousePos(ev);
-        });
-      }
-      updateMovingState() {
-        setInterval(() => {
-          if (this.mouseEvent.previous && this.mouseEvent.current) {
-            const moveX = Math.abs(
-              this.mouseEvent.current.screenX - this.mouseEvent.previous.screenX
-            );
-            const moveY = Math.abs(
-              this.mouseEvent.current.screenY - this.mouseEvent.previous.screenY
-            );
-            const movement = Math.sqrt(moveX * moveX + moveY * moveY);
-
-            if (movement == 0) this.isMoving = false;
-            else this.isMoving = true;
-          }
-
-          this.mouseEvent.previous = this.mouseEvent.current;
-        }, 100);
-      }
-    }
-
     // -------- UTILITY FUNCTIONS & CLASSES [END] --------
 
     // -------- GL CLASSES [START] --------
-
-    class GL {
-      constructor() {
-        this.scene = new THREE.Scene();
-
-        this.camera = new THREE.PerspectiveCamera(
-          45,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          100
-        );
-        this.camera.position.z = 50;
-
-        this.renderer = new THREE.WebGLRenderer({
-          alpha: true,
-          antialias: true
-        });
-        this.renderer.setPixelRatio(
-          gsap.utils.clamp(1.5, 1, window.devicePixelRatio)
-        );
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0xf2f2f2, 0);
-
-        this.clock = new THREE.Clock();
-
-        this.init();
-      }
-
-      init() {
-        this.addToDom();
-        this.addEvents();
-        this.run();
-      }
-
-      addToDom() {
-        const canvas = this.renderer.domElement;
-        canvas.classList.add("dom-gl");
-        document.querySelector(".my-stats").appendChild(canvas);
-      }
-
-      addEvents() {
-        window.addEventListener("resize", this.resize.bind(this));
-        requestAnimationFrame(() => this.run());
-      }
-
-      resize() {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.camera.updateProjectionMatrix();
-
-        for (let i = 0; i < this.scene.children.length; i++) {
-          const plane = this.scene.children[i];
-          if (plane.resize) plane.resize();
-        }
-      }
-
-      run() {
-        let elapsed = this.clock.getElapsedTime();
-
-        for (let i = 0; i < this.scene.children.length; i++) {
-          const plane = this.scene.children[i];
-          if (plane.updateTime) plane.updateTime(elapsed);
-        }
-
-        this.render();
-      }
-
-      render() {
-        this.renderer.render(this.scene, this.camera);
-        requestAnimationFrame(() => this.run());
-      }
-    }
 
     const Gl = new GL();
 
@@ -410,7 +276,7 @@ export default {
 
     class GlSlider extends GlObject {
       init(el) {
-        super.init(el);
+        super.init(el, Gl);
 
         this.geometry = planeGeometry;
         this.material = planeMaterial.clone();
@@ -929,14 +795,6 @@ export default {
       height: 100%;
       display: none;
     }
-  }
-
-  ::v-deep.dom-gl {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
   }
 }
 
