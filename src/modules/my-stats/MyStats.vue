@@ -340,53 +340,6 @@ export default {
         });
       }
 
-      switchTextures(index, direction) {
-        if (this.state.animating) return;
-
-        gsap
-          .timeline({
-            onStart: () => {
-              this.state.animating = true;
-              this.material.uniforms.uAnimating.value = true;
-              this.material.uniforms.uProgDirection.value = direction;
-              this.material.uniforms.uNextTex.value = this.textures[index];
-            },
-            onComplete: () => {
-              this.state.animating = false;
-              this.material.uniforms.uAnimating.value = false;
-              this.material.uniforms.uCurrTex.value = this.textures[index];
-              this.currentAmp = 0;
-            }
-          })
-          .fromTo(
-            this.material.uniforms.uProg,
-            {
-              value: 0
-            },
-            {
-              value: 1,
-              duration: 1,
-              ease: "ease.out"
-            },
-            0
-          )
-          .fromTo(
-            this.material.uniforms.uAmplitude,
-            {
-              value: 0
-            },
-            {
-              duration: 0.8,
-              value: 1,
-              repeat: 1,
-              yoyo: true,
-              yoyoEase: "sine.out",
-              ease: "expo.out"
-            },
-            0
-          );
-      }
-
       updateTime(time) {
         this.material.uniforms.uTime.value = time;
         this.run();
