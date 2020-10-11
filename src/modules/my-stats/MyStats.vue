@@ -105,7 +105,6 @@
       uniform float uProgDirection;
 
       uniform sampler2D uCurrTex;
-      uniform sampler2D uNextTex;
 
       uniform vec2 uMeshSize;
       uniform vec2 uImageSize;
@@ -138,24 +137,12 @@
         float b1=texture2D(uCurrTex,texUv*-.03).b;
         vec3 tex1=vec3(r1,g1,b1);
 
-        float r2=texture2D(uNextTex,texUv*.04).r;
-        float g2=texture2D(uNextTex,texUv*.01).g;
-        float b2=texture2D(uNextTex,texUv*-.03).b;
-        vec3 tex2=vec3(r2,g2,b2);
-
         float scaleUp=(.4+.6*(1.-uProg));
         float scaleDown=(.6+.4*uProg);
 
-        vec4 f1=mix(
-        texture2D(uCurrTex,texUv*(1.-x)*scaleUp+vec2(.15)*uProg),
-        texture2D(uNextTex,texUv*x*scaleDown),
-        x);
+        vec4 f1=texture2D(uCurrTex,texUv*(1.-x)*scaleUp+vec2(.15)*uProg);
 
-        vec3 f2=mix(tex1,tex2,x);
-
-        vec4 final=mix(f1,vec4(f2,1.),.12);
-
-        gl_FragColor=final;
+        gl_FragColor=f1;
       }
     </script>
   </div>
