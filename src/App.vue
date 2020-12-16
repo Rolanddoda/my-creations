@@ -7,7 +7,7 @@
       color="primary"
       dark
       dense
-      max-width="150px"
+      max-width="200px"
     >
       <v-app-bar-nav-icon
         @click="isDrawerOpen = !isDrawerOpen"
@@ -15,6 +15,15 @@
 
       <v-btn icon to="/">
         <v-icon>mdi-home</v-icon>
+      </v-btn>
+
+      <v-btn
+        icon
+        href="https://github.com/Rolanddoda/my-creations"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <v-icon>mdi-github</v-icon>
       </v-btn>
 
       <Grid gtc="1fr 1fr" class="arrows ml-1">
