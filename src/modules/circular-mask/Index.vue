@@ -24,19 +24,19 @@ export default {
   created() {
     this.products = [
       {
-        image: "https://source.unsplash.com/m_HRfLhgABo/1920x1080",
+        image: require("./images/image1.jpg"),
         titles: ["LET'S", "GET", "STARTED"]
       },
       {
-        image: "https://source.unsplash.com/hpjSkU2UYSU/1920x1080",
+        image: require("./images/image2.jpg"),
         titles: ["THIS", "SEEMS EASY", "CHEESE"]
       },
       {
-        image: "https://source.unsplash.com/BfrQnKBulYQ/1920x1080",
+        image: require("./images/image3.jpg"),
         titles: ["LET'S", "DO SOME CODING", "NOW"]
       },
       {
-        image: "https://source.unsplash.com/dYEuFB8KQJk/1920x1080",
+        image: require("./images/image4.jpg"),
         titles: ["AFTER", "MANY HOURS OF", "TRYING"]
       }
     ];

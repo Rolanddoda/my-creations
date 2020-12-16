@@ -2,7 +2,9 @@
   <div class="product fill-height">
     <div
       class="img"
-      :style="{ background: `url(${product.image}) center / cover` }"
+      :style="{
+        background: `url('${product.image}') center / cover`
+      }"
     ></div>
     <TitleWrapper :titles="product.titles" />
   </div>
