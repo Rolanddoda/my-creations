@@ -1,11 +1,11 @@
 <template>
-  <div class="my-stats">
+  <div class="wave-card">
     <main>
       <div class="slider">
         <div class="slider__image--wrapper">
           <img
             class="slider__image slider__image--1"
-            src="https://scontent.ftia5-1.fna.fbcdn.net/v/t1.0-9/s960x960/61880444_2641088789252229_4457837949127491584_o.jpg?_nc_cat=104&_nc_sid=110474&_nc_ohc=5AneHXZ7pokAX-5UkNc&_nc_ht=scontent.ftia5-1.fna&tp=7&oh=f3eaee6ee589e8439731be2e96f201af&oe=5FA7A577"
+            src="@/assets/roland-in-denmark.jpg"
             alt="image 01"
           />
         </div>
@@ -424,7 +424,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Red+Rose:wght@300;400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
 
-.my-stats {
+.wave-card {
   --cursor-stroke: #5631e9;
   --cursor-fill: transparent;
   --cursor-stroke-width: 1px;
@@ -510,14 +510,14 @@ export default {
 }
 
 @media only screen and (max-width: 53em) {
-  .my-stats {
+  .wave-card {
     --image-width: calc(var(--base-image-width) / 1.125);
     --image-height: calc(var(--base-image-height) / 1.125);
   }
 }
 
 @media only screen and (max-width: 32em) {
-  .my-stats {
+  .wave-card {
     --image-width: calc(var(--base-image-width) / 1.5);
     --image-height: calc(var(--base-image-height) / 1.5);
   }

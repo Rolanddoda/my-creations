@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import gsap from "gsap";
-import { initWebGl } from "@/modules/my-stats/webGl/webGl";
+import { initWebGl } from "@/modules/wave-card/webGl/webGl";
 
 let mouseOver = false,
   mouseDown = false;
@@ -34,7 +34,6 @@ export class GlSlider extends THREE.Object3D {
 
     this.material.uniforms = {
       uCurrTex: { value: 0 },
-      uNextTex: { value: 0 },
       uTime: { value: 0 },
       uProg: { value: 0 },
       uAmplitude: { value: 0 },

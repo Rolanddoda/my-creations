@@ -35,7 +35,7 @@ function addCanvasToTheDom() {
   canvas.style.position = "fixed";
   canvas.style.top = "0";
   canvas.style.left = "0";
-  document.querySelector(".my-stats").appendChild(canvas);
+  document.querySelector(".wave-card").appendChild(canvas);
 }
 
 function onResize() {
