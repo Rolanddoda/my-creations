@@ -2,22 +2,22 @@
   <Grid justify-content="center" align-items="center" class="roland-2020">
     <div class="wrapper">
       <span class="text-wrapper">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
       <span class="text-wrapper text-wrapper--sibling">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
       <span class="text-wrapper text-wrapper--sibling">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
       <span class="text-wrapper text-wrapper--sibling">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
       <span class="text-wrapper text-wrapper--sibling">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
       <span class="text-wrapper text-wrapper--sibling">
-        <span class="text">Roland's 2020</span>
+        <span class="text">Roland's <span class="year">2020</span> </span>
       </span>
     </div>
   </Grid>
@@ -72,7 +72,20 @@
 .text {
   display: block;
   transform-origin: bottom left;
-  animation: moveIn 2s 3 cubic-bezier(0.36, 0, 0.06, 1) alternate forwards;
+  animation: moveIn 1.5s 3 cubic-bezier(0.36, 0, 0.06, 1) alternate forwards;
+
+  .year {
+    background: linear-gradient(
+      to left,
+      #f5624d,
+      #cc231e,
+      #34a65f,
+      #0f8a5f,
+      #235e6f
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 .text-wrapper:nth-child(1) .text {
   transform: translateY(-0.1em);
