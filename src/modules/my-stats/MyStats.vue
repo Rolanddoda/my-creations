@@ -1,15 +1,18 @@
 <template>
   <div class="my-stats fill-height">
     <ClipPathBackgrounds />
+    <Rolands2020 />
   </div>
 </template>
 
 <script>
 import ClipPathBackgrounds from "./components/ClipPathBackgrounds";
+import Rolands2020 from "./components/Rolands2020";
 
 export default {
   components: {
-    ClipPathBackgrounds
+    ClipPathBackgrounds,
+    Rolands2020
   }
 };
 </script>
@@ -23,5 +26,6 @@ export default {
     #510775 50%,
     #3b118d 100%
   );
+  color: white;
 }
 </style>
