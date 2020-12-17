@@ -28,29 +28,50 @@
     }
 
     .bg-1 {
-      background-color: #ff9a8b;
-      background-image: linear-gradient(
-        45deg,
-        #ff9a8b 0%,
-        #ff6a88 55%,
-        #ff99ac 100%
-      );
+      background-color: #08aeea;
+      background-image: linear-gradient(360deg, #08aeea 0%, #2af598 100%);
 
-      clip-path: polygon(50% 0%, 100% 0, 100% 100%, 95% 40%);
+      clip-path: polygon(50% 0%, 100% 0, 100% 100%, 100% 0%);
+      animation: animate-bg1 0.6s cubic-bezier(0.42, 0.4, 0.53, 1.59) forwards;
+      animation-delay: 1s;
     }
 
     .bg-2 {
-      background-color: #fbda61;
-      background-image: linear-gradient(45deg, #fbda61 0%, #ff5acd 100%);
+      background-color: #08aeea;
+      background-image: linear-gradient(180deg, #08aeea 0%, #2af598 100%);
 
-      clip-path: polygon(50% 0, 50% 0, 95% 40%, 100% 100%, 100% 100%, 90% 47%);
+      clip-path: polygon(50% 0, 50% 0, 95% 40%, 100% 100%, 100% 100%, 95% 40%);
+
+      animation: animate-bg2 0.6s cubic-bezier(0.42, 0.4, 0.53, 1.59) forwards;
+      animation-delay: 1.8s;
     }
 
     .bg-3 {
       background-color: #08aeea;
       background-image: linear-gradient(0deg, #08aeea 0%, #2af598 100%);
-      clip-path: polygon(0 0, 20% 0, 15% 71%, 80% 100%, 0 100%, 0 69%);
+      clip-path: polygon(0 0, 0% 0, 0% 71%, 0% 100%, 0 100%, 0 69%);
+
+      animation: animate-bg3 0.6s cubic-bezier(0.42, 0.4, 0.53, 1.59) forwards;
+      animation-delay: 1s;
     }
+  }
+}
+
+@keyframes animate-bg1 {
+  to {
+    clip-path: polygon(50% 0%, 100% 0, 100% 100%, 95% 40%);
+  }
+}
+
+@keyframes animate-bg2 {
+  to {
+    clip-path: polygon(50% 0, 50% 0, 95% 40%, 100% 100%, 100% 100%, 90% 47%);
+  }
+}
+
+@keyframes animate-bg3 {
+  to {
+    clip-path: polygon(0 0, 20% 0, 15% 71%, 80% 100%, 0 100%, 0 69%);
   }
 }
 </style>
