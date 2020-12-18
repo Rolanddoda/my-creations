@@ -2,20 +2,20 @@
   <div class="my-stats fill-height">
     <ClipPathBackgrounds />
     <Rolands2020 />
-    <ClickMeShape />
+    <MorphShape />
   </div>
 </template>
 
 <script>
 import ClipPathBackgrounds from "./components/ClipPathBackgrounds";
 import Rolands2020 from "./components/Rolands2020";
-import ClickMeShape from "./components/ClickMeShape";
+import MorphShape from "./components/MorphShape";
 
 export default {
   components: {
     ClipPathBackgrounds,
     Rolands2020,
-    ClickMeShape
+    MorphShape
   }
 };
 </script>
