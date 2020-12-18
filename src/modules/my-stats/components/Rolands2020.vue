@@ -73,6 +73,7 @@
   display: block;
   transform-origin: bottom left;
   animation: moveIn 1.5s 3 cubic-bezier(0.36, 0, 0.06, 1) alternate forwards;
+  user-select: none;
 
   .year {
     background: linear-gradient(
@@ -85,6 +86,7 @@
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    user-select: none;
   }
 }
 .text-wrapper:nth-child(1) .text {
