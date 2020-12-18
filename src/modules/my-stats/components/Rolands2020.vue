@@ -25,8 +25,6 @@
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Staatliches&display=swap");
 
 .roland-2020 {
   position: absolute;

@@ -3,6 +3,7 @@
     <ClipPathBackgrounds />
     <Rolands2020 />
     <MorphShape />
+    <SeeStatsBtn />
   </div>
 </template>
 
@@ -10,12 +11,14 @@
 import ClipPathBackgrounds from "./components/ClipPathBackgrounds";
 import Rolands2020 from "./components/Rolands2020";
 import MorphShape from "./components/MorphShape";
+import SeeStatsBtn from "./components/SeeStatsBtn";
 
 export default {
   components: {
     ClipPathBackgrounds,
     Rolands2020,
-    MorphShape
+    MorphShape,
+    SeeStatsBtn
   }
 };
 </script>
@@ -24,5 +27,8 @@ export default {
 .my-stats {
   background-color: #0f4551;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
