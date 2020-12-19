@@ -49,7 +49,6 @@
       width: calc(100% + 4px);
       height: calc(100% + 4px);
       animation: glowing 20s linear infinite;
-      transition: opacity 0.3s ease-in-out;
       border-radius: 10px;
     }
 
