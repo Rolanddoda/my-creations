@@ -1,111 +1,24 @@
 <template>
   <Grid justify-content="center" align-items="center" class="stats-component">
-    <Grid gtc="auto 1fr" gap="2rem" class="card">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path
-          fill="#68e4bc"
-          fill-opacity="1"
-          d="M0,64L34.3,74.7C68.6,85,137,107,206,112C274.3,117,343,107,411,122.7C480,139,549,181,617,213.3C685.7,245,754,267,823,250.7C891.4,235,960,181,1029,170.7C1097.1,160,1166,192,1234,186.7C1302.9,181,1371,139,1406,117.3L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
-        ></path>
-      </svg>
-
-      <div class="thumbnail">
-        <v-img
-          src="https://avatars0.githubusercontent.com/u/18482346?s=460&u=9edc330c7815a52c4438ba9827af194dde186bff&v=4"
-        ></v-img>
-      </div>
-
-      <Grid align-items="center" class="text">
-        <h2>Front End Developer's <span>Quote</span></h2>
-        <blockquote>
-          <p>
-            Always code as if the guy who ends up maintaining your code will be
-            a violent psychopath who knows where you live.
-          </p>
-        </blockquote>
-      </Grid>
-    </Grid>
+    <DevQuoteCard />
   </Grid>
 </template>
 
 <script>
+import DevQuoteCard from "./DevQuoteCard";
+
 export default {
-  components: {}
+  components: {
+    DevQuoteCard
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Alegreya:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
-
 .stats-component {
   position: absolute;
   height: 100%;
   width: 100%;
   background: #0f0c29;
-  font-family: "Leckerli One", cursive;
-
-  .card {
-    background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
-    padding: 2rem;
-    width: 650px;
-    border-radius: 10px;
-    height: 250px;
-
-    svg {
-      position: absolute;
-      bottom: -10px;
-      transform: translate(10px, 10px);
-      border-radius: 10px 20px 0 0;
-    }
-
-    .thumbnail {
-      padding: 0.5rem;
-      background: linear-gradient(to right, #68e4bc 0%, #4ad0d1 99%);
-      border-radius: 10px;
-      width: 185px;
-      height: 185px;
-      box-shadow: 5px -6px rgba(74, 208, 209, 0.5),
-        -5px 6px rgba(74, 208, 209, 0.5);
-    }
-
-    .text {
-      h2 {
-        font-family: "Leckerli One", cursive;
-        text-decoration: underline;
-        text-align: center;
-        color: #ffff38;
-
-        span {
-          background: linear-gradient(to right, #68e4bc 0%, #4ad0d1 99%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      }
-
-      blockquote {
-        font-family: "Alegreya", serif;
-        font-size: 1.2rem;
-        padding: 0 3.5rem;
-        text-align: center;
-        color: #f9f9f9;
-
-        p::before,
-        p::after {
-          content: "“";
-          font-family: Georgia, sans-serif;
-          font-size: 4rem;
-          margin: -1rem 0 0 -2rem;
-          position: absolute;
-          opacity: 0.5;
-        }
-
-        p::after {
-          content: "”";
-          margin: -0.5rem 0.2rem;
-        }
-      }
-    }
-  }
 }
 </style>
