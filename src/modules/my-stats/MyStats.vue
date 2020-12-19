@@ -2,8 +2,8 @@
   <div class="my-stats fill-height">
     <ClipPathBackgrounds />
     <Rolands2020 />
-    <MorphShape />
-    <SeeStatsBtn />
+    <MorphShape :see-stats="seeStats" />
+    <SeeStatsBtn @see-stats="seeStats = true" />
   </div>
 </template>
 
@@ -19,7 +19,11 @@ export default {
     Rolands2020,
     MorphShape,
     SeeStatsBtn
-  }
+  },
+
+  data: () => ({
+    seeStats: false
+  })
 };
 </script>
 

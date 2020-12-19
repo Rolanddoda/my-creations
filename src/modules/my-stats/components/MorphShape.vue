@@ -1,6 +1,6 @@
 <template>
   <div class="start">
-    <div class="shape">
+    <div class="shape" :class="{ fullscreen: seeStats }">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <path
           v-for="(path, index) of paths"
@@ -19,6 +19,10 @@
 import KUTE from "kute.js";
 
 export default {
+  props: {
+    seeStats: Boolean
+  },
+
   created() {
     this.paths = [
       {
@@ -102,9 +106,20 @@ export default {
     opacity: 0.4;
     transform: scale(0);
     animation: showing 0.5s ease-in forwards 5s;
+    z-index: 1;
 
     > svg {
       filter: drop-shadow(7px 6px 10px rgba(255, 255, 255, 0.2));
+      transition: transform 1s ease-in;
+    }
+
+    &.fullscreen {
+      opacity: 1;
+      mix-blend-mode: normal;
+
+      > svg {
+        transform: scale(10);
+      }
     }
   }
 }

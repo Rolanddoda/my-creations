@@ -1,6 +1,6 @@
 <template>
   <div class="button-wrapper">
-    <button>See stats</button>
+    <button @click="$emit('see-stats')">See stats</button>
   </div>
 </template>
 
