@@ -81,6 +81,14 @@ export default {
     }
 
     startAnimation();
+
+    const svg = this.$el.querySelector("svg");
+    const thisCmp = this;
+
+    svg.addEventListener("transitionend", function() {
+      this.style.transform = "scale(0)";
+      thisCmp.$emit("show-stats-component");
+    });
   }
 };
 </script>
@@ -90,8 +98,6 @@ export default {
 
 .start {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
