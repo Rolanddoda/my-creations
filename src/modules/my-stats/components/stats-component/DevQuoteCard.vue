@@ -1,5 +1,7 @@
 <template>
   <Grid gtc="auto 1fr" gap="2rem" class="card">
+    <div class="card-layout"></div>
+
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
       <defs>
         <linearGradient id="gradient">
@@ -42,17 +44,27 @@
   --color-stop-1: #68e4bc;
   --color-stop-2: #4ad0d1;
 
-  background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
   padding: 2rem;
   width: 650px;
   border-radius: 10px;
   height: 250px;
 
+  .card-layout {
+    position: absolute;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+    transform: scale(0);
+    animation: scale-up 0.6s 1s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+  }
+
   svg {
     position: absolute;
     bottom: -10px;
-    transform: translate(10px, 10px);
     border-radius: 10px 20px 0 0;
+    transform: translate(100%, 100%);
+    animation: position-svg 1s 2.2s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
   }
 
   .thumbnail {
@@ -63,9 +75,16 @@
     height: 185px;
     box-shadow: 5px -6px rgba(74, 208, 209, 0.5),
       -5px 6px rgba(74, 208, 209, 0.5);
+    transform: translate(-150%, -150%);
+    animation: position-thumbnail 1s 2.2s cubic-bezier(0.68, -0.6, 0.32, 1.6)
+      forwards;
   }
 
   .text {
+    transform: translate(150%, -150%);
+    animation: position-quote 1s 2.2s cubic-bezier(0.68, -0.6, 0.32, 1.6)
+      forwards;
+
     h2 {
       font-family: "Leckerli One", cursive;
       text-decoration: underline;
@@ -101,6 +120,29 @@
         margin: -0.5rem 0.2rem;
       }
     }
+  }
+}
+
+@keyframes scale-up {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes position-svg {
+  to {
+    transform: translate(10px, 10px);
+  }
+}
+@keyframes position-thumbnail {
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes position-quote {
+  to {
+    transform: translate(0, 0);
   }
 }
 </style>
