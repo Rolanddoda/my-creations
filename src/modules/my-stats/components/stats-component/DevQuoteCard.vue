@@ -40,6 +40,7 @@
 
     <StackOverflowCard />
     <GithubCard />
+    <DevtoCard />
   </Grid>
 </template>
 
@@ -47,12 +48,14 @@
 import CardSidebar from "./CardSidebar";
 import StackOverflowCard from "./StackOverflowCard";
 import GithubCard from "./GithubCard";
+import DevtoCard from "./DevtoCard";
 
 export default {
   components: {
     CardSidebar,
     StackOverflowCard,
-    GithubCard
+    GithubCard,
+    DevtoCard
   }
 };
 </script>
