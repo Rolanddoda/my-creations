@@ -1,49 +1,55 @@
 <template>
-  <Grid gtc="auto 1fr" gap="2rem" class="card">
+  <div class="card">
     <CardSidebar />
 
-    <div class="card-layout"></div>
+    <Grid gtc="auto 1fr" gap="2rem" class="card-content">
+      <div class="card-layout"></div>
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <defs>
-        <linearGradient id="gradient">
-          <stop offset="0%" stop-color="var(--color-stop-1)" />
-          <stop offset="99%" stop-color="var(--color-stop-2)" />
-        </linearGradient>
-      </defs>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <defs>
+          <linearGradient id="gradient">
+            <stop offset="0%" stop-color="var(--color-stop-1)" />
+            <stop offset="99%" stop-color="var(--color-stop-2)" />
+          </linearGradient>
+        </defs>
 
-      <path
-        fill="url(#gradient)"
-        class="gradient-bg"
-        fill-opacity="1"
-        d="M0,64L34.3,74.7C68.6,85,137,107,206,112C274.3,117,343,107,411,122.7C480,139,549,181,617,213.3C685.7,245,754,267,823,250.7C891.4,235,960,181,1029,170.7C1097.1,160,1166,192,1234,186.7C1302.9,181,1371,139,1406,117.3L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
-      ></path>
-    </svg>
+        <path
+          fill="url(#gradient)"
+          class="gradient-bg"
+          fill-opacity="1"
+          d="M0,64L34.3,74.7C68.6,85,137,107,206,112C274.3,117,343,107,411,122.7C480,139,549,181,617,213.3C685.7,245,754,267,823,250.7C891.4,235,960,181,1029,170.7C1097.1,160,1166,192,1234,186.7C1302.9,181,1371,139,1406,117.3L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
+        ></path>
+      </svg>
 
-    <div class="thumbnail">
-      <v-img
-        src="https://avatars0.githubusercontent.com/u/18482346?s=460&u=9edc330c7815a52c4438ba9827af194dde186bff&v=4"
-      ></v-img>
-    </div>
+      <div class="thumbnail">
+        <v-img
+          src="https://avatars0.githubusercontent.com/u/18482346?s=460&u=9edc330c7815a52c4438ba9827af194dde186bff&v=4"
+        ></v-img>
+      </div>
 
-    <Grid align-items="center" class="text">
-      <h2>Front End Developer's <span>Quote</span></h2>
-      <blockquote>
-        <p>
-          Always code as if the guy who ends up maintaining your code will be a
-          violent psychopath who knows where you live.
-        </p>
-      </blockquote>
+      <Grid align-items="center" class="text">
+        <h2>Front End Developer's <span>Quote</span></h2>
+        <blockquote>
+          <p>
+            Always code as if the guy who ends up maintaining your code will be
+            a violent psychopath who knows where you live.
+          </p>
+        </blockquote>
+      </Grid>
     </Grid>
-  </Grid>
+
+    <StackOverflowCard />
+  </div>
 </template>
 
 <script>
 import CardSidebar from "./CardSidebar";
+import StackOverflowCard from "./StackOverflowCard";
 
 export default {
   components: {
-    CardSidebar
+    CardSidebar,
+    StackOverflowCard
   }
 };
 </script>
@@ -55,10 +61,16 @@ export default {
 .card {
   --color-stop-1: #68e4bc;
   --color-stop-2: #4ad0d1;
-  padding: 2rem;
   width: 650px;
   border-radius: 10px;
   height: 250px;
+
+  .card-content {
+    width: inherit;
+    height: inherit;
+    padding: 2rem;
+    z-index: 1;
+  }
 
   .card-layout {
     position: absolute;
