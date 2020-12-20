@@ -35,22 +35,51 @@ export default {
   background-repeat: repeat;
   background-position: center center;
 
-  .stack-overflow {
-    transform: skew(2deg, 12deg);
+  --anim-dutation: 0.6s;
+  --anim-ease: cubic-bezier(0.5, 1, 0.89, 1);
+
+  .stack-overflow.wrapper {
+    animation: show-stackoverflow var(--anim-dutation) 1s var(--anim-ease)
+      forwards;
   }
 
   .dev-to {
     left: 40%;
-    transform: skew(25deg, -13deg);
+    animation: show-dev-to var(--anim-dutation) 1.2s var(--anim-ease) forwards;
   }
 
   .youtube {
     left: 40%;
+    animation: show-youtube var(--anim-dutation) 1.3s var(--anim-ease) forwards;
   }
 
   .google {
     top: 60%;
-    transform: skew(10deg, 10deg);
+    animation: show-google var(--anim-dutation) 1.4s var(--anim-ease) forwards;
+  }
+}
+
+@keyframes show-stackoverflow {
+  to {
+    transform: scale(1) skew(2deg, 12deg);
+  }
+}
+
+@keyframes show-dev-to {
+  to {
+    transform: scale(1) skew(25deg, -13deg);
+  }
+}
+
+@keyframes show-youtube {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes show-google {
+  to {
+    transform: scale(1) skew(10deg, 10deg);
   }
 }
 </style>

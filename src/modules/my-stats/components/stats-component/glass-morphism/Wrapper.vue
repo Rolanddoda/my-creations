@@ -41,6 +41,7 @@ export default {
   right: var(--right);
   bottom: var(--bottom);
   left: var(--left);
+  transform: scale(0);
 
   .text {
     font-family: "Leckerli One", cursive;
