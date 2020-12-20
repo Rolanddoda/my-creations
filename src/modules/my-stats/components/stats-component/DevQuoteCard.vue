@@ -1,8 +1,13 @@
 <template>
   <Grid class="card">
-    <CardSidebar />
+    <CardSidebar @active="active = $event" />
 
-    <Grid gtc="auto 1fr" gap="2rem" class="card-content">
+    <Grid
+      :class="{ active: !active || active === 'account' }"
+      gtc="auto 1fr"
+      gap="2rem"
+      class="card-content"
+    >
       <div class="card-layout"></div>
 
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -38,9 +43,9 @@
       </Grid>
     </Grid>
 
-    <StackOverflowCard />
-    <GithubCard />
-    <DevtoCard />
+    <StackOverflowCard :class="{ active: active === 'stackoverflow' }" />
+    <GithubCard :class="{ active: active === 'github' }" />
+    <DevtoCard :class="{ active: active === 'devto' }" />
   </Grid>
 </template>
 
@@ -59,7 +64,7 @@ export default {
   },
 
   data: () => ({
-    active: ""
+    active: null
   })
 };
 </script>
@@ -81,6 +86,19 @@ export default {
     padding: 2rem;
     z-index: 1;
     grid-area: 1 / -1;
+    transition: transform 0.7s cubic-bezier(0.36, 0, 0.66, -0.56),
+      opacity 0.6s cubic-bezier(0.36, 0, 0.66, -0.56);
+    transform: translateY(-300%);
+    opacity: 0;
+
+    &.active {
+      transform: translateY(0);
+      opacity: 1;
+
+      ~ .card-content {
+        transform: translateY(300%);
+      }
+    }
   }
 
   .card-layout {

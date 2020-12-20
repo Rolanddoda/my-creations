@@ -113,6 +113,7 @@ export default {
     transform: scale(0);
     animation: showing 0.5s ease-in forwards 5s;
     z-index: 1;
+    pointer-events: none;
 
     > svg {
       filter: drop-shadow(7px 6px 10px rgba(255, 255, 255, 0.2));

@@ -17,9 +17,9 @@ export default {
   data: () => ({
     items: [
       { name: "account", icon: "mdi-account" },
-      { name: "devto", icon: "mdi-dev-to" },
+      { name: "stackoverflow", icon: "mdi-stack-overflow" },
       { name: "github", icon: "mdi-github" },
-      { name: "stackoverflow", icon: "mdi-stack-overflow" }
+      { name: "devto", icon: "mdi-dev-to" }
     ],
     active: "account"
   }),
@@ -44,15 +44,7 @@ export default {
   border-radius: 10px;
   width: 50px;
   padding: 10px 0;
-  //background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
-  background: linear-gradient(
-    33deg,
-    #68e4bc 0%,
-    #4ad0d1 24%,
-    #2c5364 48%,
-    #203a43 75%,
-    #0f2027 99%
-  );
+  background: linear-gradient(45deg, #2c5364, #203a43, #0f2027);
   animation: show-sidebar 1s 2.5s cubic-bezier(0.45, 0, 0.55, 1) forwards;
   opacity: 0;
 
@@ -62,8 +54,6 @@ export default {
     padding: 5px;
     text-align: center;
     border-radius: 10px;
-    //background: linear-gradient(to right, #68e4bc 0%, #4ad0d1 99%);
-    border: 1px solid white;
     box-shadow: 0 0 5px 1px #5fdec2;
     cursor: pointer;
 
