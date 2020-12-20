@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <Grid class="card">
     <CardSidebar />
 
     <Grid gtc="auto 1fr" gap="2rem" class="card-content">
@@ -39,17 +39,20 @@
     </Grid>
 
     <StackOverflowCard />
-  </div>
+    <GithubCard />
+  </Grid>
 </template>
 
 <script>
 import CardSidebar from "./CardSidebar";
 import StackOverflowCard from "./StackOverflowCard";
+import GithubCard from "./GithubCard";
 
 export default {
   components: {
     CardSidebar,
-    StackOverflowCard
+    StackOverflowCard,
+    GithubCard
   }
 };
 </script>
@@ -70,6 +73,7 @@ export default {
     height: inherit;
     padding: 2rem;
     z-index: 1;
+    grid-area: 1 / -1;
   }
 
   .card-layout {
