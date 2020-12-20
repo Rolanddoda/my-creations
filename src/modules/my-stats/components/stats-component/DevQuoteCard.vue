@@ -1,5 +1,7 @@
 <template>
   <Grid gtc="auto 1fr" gap="2rem" class="card">
+    <CardSidebar />
+
     <div class="card-layout"></div>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -36,6 +38,16 @@
   </Grid>
 </template>
 
+<script>
+import CardSidebar from "./CardSidebar";
+
+export default {
+  components: {
+    CardSidebar
+  }
+};
+</script>
+
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Alegreya:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
@@ -43,7 +55,6 @@
 .card {
   --color-stop-1: #68e4bc;
   --color-stop-2: #4ad0d1;
-
   padding: 2rem;
   width: 650px;
   border-radius: 10px;
@@ -134,6 +145,7 @@
     transform: translate(10px, 10px);
   }
 }
+
 @keyframes position-thumbnail {
   to {
     transform: translate(0, 0);
