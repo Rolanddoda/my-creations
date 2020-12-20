@@ -1,22 +1,39 @@
 <template>
   <Grid gap="15px" align-items="start" align-content="start" class="sidebar">
-    <div class="nav-btn">
-      <v-icon color="white">mdi-account</v-icon>
-    </div>
-
-    <div class="nav-btn">
-      <v-icon color="white">mdi-dev-to</v-icon>
-    </div>
-
-    <div class="nav-btn">
-      <v-icon color="white">mdi-github</v-icon>
-    </div>
-
-    <div class="nav-btn">
-      <v-icon color="white">mdi-stack-overflow</v-icon>
+    <div
+      v-for="item of items"
+      :key="item.name"
+      :class="{ active: item.name === active }"
+      class="nav-btn"
+      @click="active = item.name"
+    >
+      <v-icon color="white">{{ item.icon }}</v-icon>
     </div>
   </Grid>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    items: [
+      { name: "account", icon: "mdi-account" },
+      { name: "devto", icon: "mdi-dev-to" },
+      { name: "github", icon: "mdi-github" },
+      { name: "stackoverflow", icon: "mdi-stack-overflow" }
+    ],
+    active: "account"
+  }),
+
+  watch: {
+    active: {
+      handler(newVal) {
+        this.$emit("active", newVal);
+      },
+      immediate: true
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .sidebar {
@@ -49,6 +66,10 @@
     border: 1px solid white;
     box-shadow: 0 0 5px 1px #5fdec2;
     cursor: pointer;
+
+    &.active {
+      background: linear-gradient(to right, #68e4bc 0%, #4ad0d1 99%);
+    }
   }
 }
 

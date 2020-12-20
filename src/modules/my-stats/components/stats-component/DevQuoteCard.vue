@@ -56,7 +56,11 @@ export default {
     StackOverflowCard,
     GithubCard,
     DevtoCard
-  }
+  },
+
+  data: () => ({
+    active: ""
+  })
 };
 </script>
 
