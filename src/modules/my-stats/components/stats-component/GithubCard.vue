@@ -40,8 +40,10 @@
 
       <Grid gap="0.5rem" justify-content="center">
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Contributions:</div>
-          <div class="so-count">3,807</div>
+          <div class="so-legend">Contributions from 2020:</div>
+          <div class="so-count">
+            {{ Intl.NumberFormat().format($store.state.github.contributions) }}
+          </div>
         </Grid>
 
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
@@ -61,14 +63,14 @@
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
           <div class="so-legend">Followers:</div>
           <div class="so-count">
-            30
+            {{ $store.state.github.followers }}
           </div>
         </Grid>
 
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Repositories:</div>
+          <div class="so-legend">Public repos:</div>
           <div class="so-count">
-            31
+            {{ $store.state.github.publicRepos }}
           </div>
         </Grid>
       </Grid>

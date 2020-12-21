@@ -1,18 +1,37 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import moment from "moment";
 
 Vue.use(Vuex);
+
+function parseAndGetContributions(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html"); //returns an HTMLDocument, which also is a Document.
+  const text = doc.body.querySelector(".js-yearly-contributions h2")
+    .textContent;
+  return text.trim().split("contributions")[0];
+}
+
+function getGithubData() {
+  return axios.get("http://localhost:8080/users/Rolanddoda", {
+    headers: {
+      Accept: "Accept: application/vnd.github.v3+json"
+    }
+  });
+}
 
 export default new Vuex.Store({
   state: {
     stackoverflow: null,
-    devtoArticles: null
+    devtoArticles: null,
+    github: null
   },
 
   mutations: {
     setStackoverflowData: (state, payload) => (state.stackoverflow = payload),
-    setDevtoData: (state, payload) => (state.devtoArticles = payload)
+    setDevtoData: (state, payload) => (state.devtoArticles = payload),
+    setGithubData: (state, payload) => (state.github = payload)
   },
 
   actions: {
@@ -39,6 +58,7 @@ export default new Vuex.Store({
         commit("setStackoverflowData", data);
       });
     },
+
     getDevtoArticles({ commit }) {
       axios
         .get("http://localhost:8080/api/articles/me/all/", {
@@ -46,6 +66,26 @@ export default new Vuex.Store({
         })
         .then(({ data: articles }) => {
           commit("setDevtoData", articles);
+        });
+    },
+
+    async extractInfoFromGithub({ commit }) {
+      const todaysDate = moment().format("YYYY-MM-DD");
+
+      axios
+        .get(
+          `http://localhost:8080/Rolanddoda?tab=overview&from=2020-12-01&to=${todaysDate}`
+        )
+        .then(async res => {
+          const contributions = parseAndGetContributions(res.data);
+          const { data: githubData } = await getGithubData();
+          const { followers, public_repos } = githubData;
+
+          commit("setGithubData", {
+            contributions,
+            followers,
+            publicRepos: public_repos
+          });
         });
     }
   }
