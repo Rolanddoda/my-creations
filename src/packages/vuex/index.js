@@ -2,14 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import moment from "moment";
+import articles from "@/../devto-articles.json";
 
 Vue.use(Vuex);
-
-const axiosInstance = axios.create({
-  headers: {
-    "Content-Type": "application/json"
-  }
-});
 
 function parseAndGetContributions(html) {
   const parser = new DOMParser();
@@ -30,13 +25,12 @@ function getGithubData() {
 export default new Vuex.Store({
   state: {
     stackoverflow: null,
-    devtoArticles: null,
+    devtoArticles: articles,
     github: null
   },
 
   mutations: {
     setStackoverflowData: (state, payload) => (state.stackoverflow = payload),
-    setDevtoData: (state, payload) => (state.devtoArticles = payload),
     setGithubData: (state, payload) => (state.github = payload)
   },
 
@@ -50,7 +44,6 @@ export default new Vuex.Store({
           "https://api.stackexchange.com/2.2/users/6385184?order=desc&sort=reputation&site=stackoverflow&filter=!LnOc*kSGImRnIS(7WOjCjN"
         )
       ]).then(([res1, res2]) => {
-        console.log({ res2 });
         const data = {
           topTags: res1.data.items
             .filter(item => item.tag_name !== "post")
@@ -63,18 +56,6 @@ export default new Vuex.Store({
 
         commit("setStackoverflowData", data);
       });
-    },
-
-    getDevtoArticles({ commit }) {
-      axiosInstance
-        .get("https://dev.to/api/articles/me/all", {
-          headers: {
-            "api-key": process.env.VUE_APP_DEVTO
-          }
-        })
-        .then(({ data: articles }) => {
-          commit("setDevtoData", articles);
-        });
     },
 
     async extractInfoFromGithub({ commit }) {
