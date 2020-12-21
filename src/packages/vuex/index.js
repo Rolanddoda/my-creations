@@ -6,11 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    stackoverflow: null
+    stackoverflow: null,
+    devtoArticles: null
   },
 
   mutations: {
-    setStackoverflowData: (state, payload) => (state.stackoverflow = payload)
+    setStackoverflowData: (state, payload) => (state.stackoverflow = payload),
+    setDevtoData: (state, payload) => (state.devtoArticles = payload)
   },
 
   actions: {
@@ -36,6 +38,15 @@ export default new Vuex.Store({
 
         commit("setStackoverflowData", data);
       });
+    },
+    getDevtoArticles({ commit }) {
+      axios
+        .get("http://localhost:8080/api/articles/me/all/", {
+          headers: { "api-key": process.env.VUE_APP_DEVTO }
+        })
+        .then(({ data: articles }) => {
+          commit("setDevtoData", articles);
+        });
     }
   }
 });

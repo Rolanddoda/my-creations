@@ -30,38 +30,52 @@
       </v-tooltip>
     </div>
 
-    <Grid
-      gap="16px"
-      align-items="start"
-      align-content="start"
-      class="so-description"
-    >
-      <h1 class="so-title">Dev.to</h1>
+    <Grid align-items="start" align-content="start" class="so-description">
+      <h2 class="so-title">Dev.to</h2>
 
-      <Grid gap="0.5rem" justify-content="center">
-        <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Total reactions:</div>
-          <div class="so-count">367</div>
-        </Grid>
+      <Grid gap="0.2rem" gtr="1fr 1fr" class="dev-cards">
+        <a
+          v-for="article of $store.state.devtoArticles"
+          :key="article.id"
+          :href="article.url"
+          target="_blank"
+          rel="noopener"
+        >
+          <v-card hover dark>
+            <v-card-text class="subtitle-2 py-0 pt-2">
+              {{ article.title }}
+            </v-card-text>
 
-        <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Total views:</div>
-          <div class="so-count">50,000</div>
-        </Grid>
+            <v-card-actions class="pa-0">
+              <v-list-item dense>
+                <v-row dense align="center" justify="end">
+                  <v-icon small class="mr-1">
+                    mdi-heart
+                  </v-icon>
+                  <span class="subheading mr-2">{{
+                    article.public_reactions_count
+                  }}</span>
 
-        <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Followers:</div>
-          <div class="so-count">
-            1300
-          </div>
-        </Grid>
+                  <span class="mr-1">·</span>
+                  <v-icon small class="mr-1">
+                    mdi-comment
+                  </v-icon>
+                  <span class="subheading mr-1">{{
+                    article.comments_count
+                  }}</span>
 
-        <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Total articles:</div>
-          <div class="so-count">
-            2
-          </div>
-        </Grid>
+                  <span class="mr-1">·</span>
+                  <v-icon small class="mr-1">
+                    mdi-eye
+                  </v-icon>
+                  <span class="subheading mr-2">{{
+                    Intl.NumberFormat().format(article.page_views_count)
+                  }}</span>
+                </v-row>
+              </v-list-item>
+            </v-card-actions>
+          </v-card>
+        </a>
       </Grid>
     </Grid>
   </Grid>
@@ -100,6 +114,18 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-align: center;
+    }
+
+    .dev-cards {
+      font-size: 0.825rem;
+
+      a {
+        text-decoration: none;
+
+        .v-card {
+          background: linear-gradient(to right, #108dc7, #ef8e38);
+        }
+      }
     }
   }
 }
