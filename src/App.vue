@@ -86,11 +86,6 @@ export default {
     isDrawerOpen: false
   }),
 
-  created() {
-    this.$store.dispatch("getStackoverflowData");
-    this.$store.dispatch("extractInfoFromGithub");
-  },
-
   computed: {
     drawerRight() {
       return this.position.includes("right");

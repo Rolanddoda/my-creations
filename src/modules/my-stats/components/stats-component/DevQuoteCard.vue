@@ -198,4 +198,25 @@ export default {
     transform: translate(0, 0);
   }
 }
+
+@media only screen and (max-width: 800px) {
+  .card {
+    width: 95%;
+    height: 450px;
+    margin: 0 auto 0 5%;
+
+    .card-content {
+      grid-template-columns: 1fr !important;
+      justify-items: center;
+      gap: 4px !important;
+      transform: translateX(-100%);
+
+      &.active {
+        ~ .card-content {
+          transform: translateX(100%);
+        }
+      }
+    }
+  }
+}
 </style>

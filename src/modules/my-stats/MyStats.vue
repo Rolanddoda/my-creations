@@ -34,7 +34,12 @@ export default {
   data: () => ({
     seeStats: false,
     showStatsComponent: false
-  })
+  }),
+
+  created() {
+    this.$store.dispatch("getStackoverflowData");
+    this.$store.dispatch("extractInfoFromGithub");
+  }
 };
 </script>
 

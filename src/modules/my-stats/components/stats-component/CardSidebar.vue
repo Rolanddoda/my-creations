@@ -47,6 +47,7 @@ export default {
   background: linear-gradient(45deg, #2c5364, #203a43, #0f2027);
   animation: show-sidebar 1s 2.5s cubic-bezier(0.45, 0, 0.55, 1) forwards;
   opacity: 0;
+  z-index: 1;
 
   .nav-btn {
     width: 80%;
@@ -67,6 +68,27 @@ export default {
   to {
     transform: translateX(-60px);
     opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .sidebar {
+    grid-auto-flow: column;
+    padding: 5px 15px;
+    width: auto;
+    height: auto;
+    left: 28%;
+
+    .nav-btn {
+      width: 40px;
+    }
+  }
+
+  @keyframes show-sidebar {
+    to {
+      transform: translateY(-60px);
+      opacity: 1;
+    }
   }
 }
 </style>
