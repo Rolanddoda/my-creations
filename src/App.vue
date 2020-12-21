@@ -87,9 +87,9 @@ export default {
   }),
 
   created() {
-    this.$store.dispatch("getStackoverflowData");
+    // this.$store.dispatch("getStackoverflowData");
     this.$store.dispatch("getDevtoArticles");
-    this.$store.dispatch("extractInfoFromGithub");
+    // this.$store.dispatch("extractInfoFromGithub");
   },
 
   computed: {

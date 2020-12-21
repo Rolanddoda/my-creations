@@ -5,6 +5,12 @@ import moment from "moment";
 
 Vue.use(Vuex);
 
+const axiosInstance = axios.create({
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+
 function parseAndGetContributions(html) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html"); //returns an HTMLDocument, which also is a Document.
@@ -60,9 +66,11 @@ export default new Vuex.Store({
     },
 
     getDevtoArticles({ commit }) {
-      axios
-        .get("https://dev.to/api/articles/me/all/", {
-          headers: { "api-key": process.env.VUE_APP_DEVTO }
+      axiosInstance
+        .get("https://dev.to/api/articles/me/all", {
+          headers: {
+            "api-key": process.env.VUE_APP_DEVTO
+          }
         })
         .then(({ data: articles }) => {
           commit("setDevtoData", articles);
