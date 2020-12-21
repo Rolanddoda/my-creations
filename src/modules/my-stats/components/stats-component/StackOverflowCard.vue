@@ -41,7 +41,11 @@
       <Grid gap="0.5rem" justify-content="center">
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
           <div class="so-legend">Reputation:</div>
-          <div class="so-count">12,000</div>
+          <div class="so-count">
+            {{
+              Intl.NumberFormat().format($store.state.stackoverflow.reputation)
+            }}
+          </div>
         </Grid>
 
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
@@ -50,16 +54,18 @@
         </Grid>
 
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">Top 1%:</div>
+          <div class="so-legend">Top tags:</div>
           <div class="so-count">
-            axios, javascript, vue.js, vue.js2, vuetify
+            {{ $store.state.stackoverflow.topTags }}
           </div>
         </Grid>
 
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
-          <div class="so-legend">This year:</div>
+          <div class="so-legend">Badges:</div>
           <div class="so-count">
-            top 0.41%
+            {{ $store.state.stackoverflow.badges.gold }} Gold,
+            {{ $store.state.stackoverflow.badges.silver }} Silver,
+            {{ $store.state.stackoverflow.badges.bronze }} Bronze
           </div>
         </Grid>
       </Grid>
