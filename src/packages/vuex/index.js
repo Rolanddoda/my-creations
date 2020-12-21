@@ -14,7 +14,7 @@ function parseAndGetContributions(html) {
 }
 
 function getGithubData() {
-  return axios.get("http://localhost:8080/users/Rolanddoda", {
+  return axios.get("https://api.github.com/users/Rolanddoda", {
     headers: {
       Accept: "Accept: application/vnd.github.v3+json"
     }
@@ -61,7 +61,7 @@ export default new Vuex.Store({
 
     getDevtoArticles({ commit }) {
       axios
-        .get("http://localhost:8080/api/articles/me/all/", {
+        .get("https://dev.to/api/articles/me/all/", {
           headers: { "api-key": process.env.VUE_APP_DEVTO }
         })
         .then(({ data: articles }) => {
@@ -74,7 +74,7 @@ export default new Vuex.Store({
 
       axios
         .get(
-          `http://localhost:8080/Rolanddoda?tab=overview&from=2020-12-01&to=${todaysDate}`
+          `https://github.com/Rolanddoda?tab=overview&from=2020-12-01&to=${todaysDate}`
         )
         .then(async res => {
           const contributions = parseAndGetContributions(res.data);
