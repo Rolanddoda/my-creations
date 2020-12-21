@@ -1,25 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import moment from "moment";
 import articles from "@/../devto-articles.json";
+import { contributions } from "@/../gh-contributions.json";
 
 Vue.use(Vuex);
 
-function parseAndGetContributions(html) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html"); //returns an HTMLDocument, which also is a Document.
-  const text = doc.body.querySelector(".js-yearly-contributions h2")
-    .textContent;
-  return text.trim().split("contributions")[0];
-}
-
 function getGithubData() {
-  return axios.get("https://api.github.com/users/Rolanddoda", {
-    headers: {
-      Accept: "Accept: application/vnd.github.v3+json"
-    }
-  });
+  return axios.get("https://api.github.com/users/Rolanddoda");
 }
 
 export default new Vuex.Store({
@@ -59,23 +47,14 @@ export default new Vuex.Store({
     },
 
     async extractInfoFromGithub({ commit }) {
-      const todaysDate = moment().format("YYYY-MM-DD");
+      const { data: githubData } = await getGithubData();
+      const { followers, public_repos } = githubData;
 
-      axios
-        .get(
-          `https://github.com/Rolanddoda?tab=overview&from=2020-12-01&to=${todaysDate}`
-        )
-        .then(async res => {
-          const contributions = parseAndGetContributions(res.data);
-          const { data: githubData } = await getGithubData();
-          const { followers, public_repos } = githubData;
-
-          commit("setGithubData", {
-            contributions,
-            followers,
-            publicRepos: public_repos
-          });
-        });
+      commit("setGithubData", {
+        contributions,
+        followers,
+        publicRepos: public_repos
+      });
     }
   }
 });

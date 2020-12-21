@@ -42,7 +42,7 @@
         <Grid gtc="auto auto" justify-content="space-between" gap="1rem">
           <div class="so-legend">Contributions from 2020:</div>
           <div class="so-count">
-            {{ Intl.NumberFormat().format($store.state.github.contributions) }}
+            {{ $store.state.github.contributions }}
           </div>
         </Grid>
 

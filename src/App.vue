@@ -88,7 +88,7 @@ export default {
 
   created() {
     this.$store.dispatch("getStackoverflowData");
-    // this.$store.dispatch("extractInfoFromGithub");
+    this.$store.dispatch("extractInfoFromGithub");
   },
 
   computed: {

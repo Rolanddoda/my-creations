@@ -21,8 +21,6 @@
     "vuex": "^3.6.0"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "execa": "^4.1.0",
     "@vue/cli-plugin-babel": "^4.5.9",
     "@vue/cli-plugin-eslint": "^4.5.9",
     "@vue/cli-plugin-router": "^4.5.9",
@@ -32,11 +30,14 @@
     "axios": "^0.18.0",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.0.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^6.2.2",
+    "execa": "^4.1.0",
     "lint-staged": "^9.5.0",
     "node-emoji": "^1.10.0",
+    "node-html-parser": "^2.0.0",
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
     "sass": "^1.30.0",
